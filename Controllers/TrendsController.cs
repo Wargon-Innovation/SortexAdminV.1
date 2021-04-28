@@ -60,15 +60,38 @@ namespace SortexAdminV._1.Controllers
             {
                 return NotFound();
             }
-
             var trend = await _context.Trends
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (trend == null)
             {
                 return NotFound();
             }
+            //HÄMTA TRE TABELLER FRÅN DB
+            //SKAPA LISTA FÖR VY
+            var trendList = await _context.Trends.ToListAsync();
+            var trendImagesMM = await _context.TrendImageMMs.ToListAsync();
+            var trendImages = await _context.TrendImages.ToListAsync();
+            var trendView = new TrendViewModel();
 
-            return View(trend);
+            trendView.Id = trend.Id;
+            trendView.Season = trend.Season;
+            trendView.Description = trend.Description;
+
+            //OM ID STÄMMER LÄGG TILL BILDER PÅ VIEW OBJEKT
+            foreach (var trendImage in trendImagesMM)
+            {
+                if (trend.Id == trendImage.Id)
+                {
+                    foreach (var image in trendImages)
+                    {
+                        trendView.TrendImages.Add(image.Image);
+                    }
+                }
+            }
+
+
+            return View(trendView);
         }
 
         // GET: Trends/Create

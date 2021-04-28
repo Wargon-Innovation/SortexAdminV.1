@@ -4,16 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-@foreach (var item in Model)
-{
-    @foreach (var image in item.TrendImages)
-    {
-       @Html.DisplayFor(model => image)
-    }
-
-}   
+<h1>Index</h1>   
 
 <p>
     <a asp-action="Create">Create New</a>
