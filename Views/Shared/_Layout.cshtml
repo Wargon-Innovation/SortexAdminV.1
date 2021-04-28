@@ -9,9 +9,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-custom navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SortexAdminV._1</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/icons/sortextransparent.png" width="160" height="50"/></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,10 +19,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Home" asp-action="Index">STARTSIDA</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Orders" asp-action="Index">ORDRAR</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Brands" asp-action="Index">MÄRKEN</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Assignments" asp-action="Index">ARBETSUPPGIFTER</a>
                         </li>
                     </ul>
                 </div>
@@ -35,9 +41,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-white text-muted">
         <div class="container">
-            &copy; 2021 - SortexAdminV._1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - SortexAdminV - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
