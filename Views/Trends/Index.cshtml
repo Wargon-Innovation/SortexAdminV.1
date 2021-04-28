@@ -35,7 +35,10 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TrendImages)
+                    @foreach (var image in item.TrendImages)
+                    {
+                        @Html.DisplayFor(modelItem => image)
+                    }
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
