@@ -44,15 +44,12 @@ namespace SortexAdminV._1.Controllers
                     {
                         foreach (var image in trendImages)
                         {
-
-                            trendView.TrendImages.Add(image.Image);
-                            
+                            trendView.TrendImages.Add(image.Image);                         
                         }
                     }
                 }
                 trendViewList.Add(trendView);
-            }
-            
+            } 
             return View(trendViewList);
         }
 
