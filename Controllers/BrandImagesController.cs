@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SortexAdminV._1.Models;
+using SortexAdminV._1.ViewModels;
 
 namespace SortexAdminV._1.Controllers
 {
     public class BrandImagesController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public BrandImagesController(SortexDBContext context)
+        public BrandImagesController(SortexDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: BrandImages
@@ -56,14 +61,47 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Image,BrandId")] BrandImage brandImage)
+        public async Task<IActionResult> Create(/*[Bind("Id,Image,BrandId")]*/ BrandImagesUploadViewModel brandImage)
         {
+            //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
+            string websiteURL = "http://localhost:39737/";
+
+            string path = _environment.WebRootPath + "\\BrandImages\\";
+            string fileName = brandImage.Image.FileName.ToLower();
+            BrandImage newBrandImage = new BrandImage();
+
+            //KOLLA OM BILDMAPPEN FINNS
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(brandImage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    //SKAPA FILEN I BILDMAPPEN
+                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
+                    {
+                        newBrandImage.Image = websiteURL + "\\BrandImages\\" + fileName;
+                        newBrandImage.BrandId = brandImage.BrandId;
+                        _context.Add(newBrandImage);
+                        await _context.SaveChangesAsync();
+
+                        brandImage.Image.CopyTo(fileStream);
+                        fileStream.Flush();
+
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                catch (Exception)
+                {
+                    TempData["Result"] = "Det gick inte uppdatera profilbilden";
+                    return RedirectToAction("Index");
+                }
+
             }
+
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id", brandImage.BrandId);
             return View(brandImage);
         }
