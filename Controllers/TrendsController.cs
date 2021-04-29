@@ -38,13 +38,16 @@ namespace SortexAdminV._1.Controllers
                 trendView.Description = trend.Description;
 
                 //OM ID STÄMMER LÄGG TILL BILDER PÅ VIEW OBJEKT
-                foreach (var trendImage in trendImagesMM)
+                foreach (var imageMM in trendImagesMM)
                 {
-                    if (trend.Id == trendImage.Id)
+                    if (trend.Id == imageMM.TrendId)
                     {
                         foreach (var image in trendImages)
                         {
-                            trendView.TrendImages.Add(image.Image);                         
+                            if (image.Id == imageMM.TrendImageId)
+                            {
+                                trendView.TrendImages.Add(image.Image);
+                            }
                         }
                     }
                 }
@@ -105,14 +108,45 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Season,Description")] Trend trend)
+        public async Task<IActionResult> Create(TrendViewModel inputView)
         {
+            var trend = new Trend();
+ 
+            trend.Season = inputView.Season;
+            trend.Description = inputView.Description;
             if (ModelState.IsValid)
             {
                 _context.Add(trend);
                 await _context.SaveChangesAsync();
+            }
+            
+
+            var trendImage = new TrendImage();
+            trendImage.Image = "Test";
+
+            _context.TrendImages.Add(trendImage);
+            await _context.SaveChangesAsync();
+           
+            
+            var trendList = await _context.Trends.ToListAsync();
+            var trendImages = await _context.TrendImages.ToListAsync();
+
+            var lastTrend = trendList.LastOrDefault();
+            var lastImage = trendImages.LastOrDefault();
+
+
+            var trendImageMM = new TrendImageMM();
+            trendImageMM.TrendId = lastTrend.Id;
+            trendImageMM.TrendImageId = lastImage.Id;
+
+
+            if (ModelState.IsValid)
+            {
+                _context.TrendImageMMs.Add(trendImageMM);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(trend);
         }
 
