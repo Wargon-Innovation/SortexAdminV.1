@@ -9,5 +9,6 @@ namespace SortexAdminV._1.Models
     {
         public int Id { get; set; }
         public string Image { get; set; }
+        public string FilePath { get; set; }
     }
 }
