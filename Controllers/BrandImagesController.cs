@@ -56,12 +56,10 @@ namespace SortexAdminV._1.Controllers
             return View();
         }
 
-        // POST: BrandImages/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(/*[Bind("Id,Image,BrandId")]*/ BrandImagesUploadViewModel brandImage)
+        public async Task<IActionResult> Create(BrandImagesUploadViewModel brandImage)
         {
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
             string websiteURL = "http://localhost:39737/";
@@ -70,21 +68,22 @@ namespace SortexAdminV._1.Controllers
             string fileName = brandImage.Image.FileName.ToLower();
             BrandImage newBrandImage = new BrandImage();
 
-            //KOLLA OM BILDMAPPEN FINNS
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //KOLLA OM BILDMAPPEN FINNS
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
                     //SKAPA FILEN I BILDMAPPEN
                     using (FileStream fileStream = System.IO.File.Create(path + fileName))
                     {
                         newBrandImage.Image = websiteURL + "\\BrandImages\\" + fileName;
                         newBrandImage.BrandId = brandImage.BrandId;
+                        newBrandImage.FilePath = path + fileName;
                         _context.Add(newBrandImage);
                         await _context.SaveChangesAsync();
 
@@ -184,6 +183,14 @@ namespace SortexAdminV._1.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var brandImage = await _context.BrandImages.FindAsync(id);
+            if(brandImage.FilePath != null)
+            {
+                FileInfo file = new FileInfo(brandImage.FilePath);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+            }
             _context.BrandImages.Remove(brandImage);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
