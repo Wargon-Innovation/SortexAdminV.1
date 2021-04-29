@@ -1,0 +1,10 @@
+﻿.nav-item a{
+    color:#222 !important;
+}
+.nav-item a:hover{
+    color:#777 !important;
+}
+
+.btn, btn-primary {
+    box-shadow: 2px 2px 2px #000;
+}
