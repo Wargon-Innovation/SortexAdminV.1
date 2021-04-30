@@ -8,12 +8,15 @@
 <div class="card">
     <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@Model.Name</h4>
     <div class="card-body">
-        <h4 class="card-title">Namn </h4>
-        <h6 class="card-title">@Model.Name</h6>
-        <h4 class="card-title">Beskrivning </h4>
-        <h6 class="card-title">@Model.Description</h6>
-        <h4 class="card-title">Image</h4>
-        <h6 class="card-text">@Model.Image</h6>
+        <h5 class="card-title">Namn </h5>
+        <p class="card-title">@Model.Name</p>
+        <p class="line"></p>
+        <h5 class="card-title">Beskrivning </h5>
+        <p class="card-title">@Model.Description</p>
+        <p class="line"></p>
+        <h5 class="card-title">Image</h5>
+        <p class="card-text">@Model.Image</p>
+        <p class="line"></p>
         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Ändra</a>
         <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
     </div>

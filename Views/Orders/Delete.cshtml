@@ -7,15 +7,18 @@
 <h1>Radera @Model.Name</h1>
 <h3>Är du säker på att du vill radera order @Model.Name?</h3>
 <div class="card">
-    <h4 class="card-header">@Model.Name</h4>
+    <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@Model.Name</h4>
     <div class="card-body">
-        <h4 class="card-title">Datum </h4>
-        <h6 class="card-title">Start: @Model.Start</h6>
-        <h6 class="card-title">Slut:  @Model.End</h6>
-        <h4 class="card-title">Kontakt </h4>
-        <h6 class="card-title">@Model.Contact</h6>
-        <h4 class="card-title">Beskrivning</h4>
-        <h6 class="card-text">@Model.Description</h6>
+        <h5 class="card-title">Datum </h5>
+        <p class="card-title">Start: @Model.Start</p>
+        <p class="card-title">Slut:  @Model.End</p>
+        <p class="line"></p>
+        <h5 class="card-title">Kontakt </h5>
+        <p class="card-title">@Model.Contact</p>
+        <p class="line"></p>
+        <h5 class="card-title">Beskrivning</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="line"></p>
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Radera" class="btn btn-danger" />
