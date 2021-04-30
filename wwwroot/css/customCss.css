@@ -1,8 +1,8 @@
 ﻿.nav-item a{
-    color:#222 !important;
+    color:#111 !important;
 }
 .nav-item a:hover{
-    color:#777 !important;
+    color:#333 !important;
 }
 
 .btn, btn-primary {
