@@ -4,48 +4,46 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Order</h4>
+<h4>Lägg till en fraktion</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Namn</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Start" class="control-label"></label>
+                <label asp-for="Start" class="control-label">Startdatum</label>
                 <input asp-for="Start" class="form-control" id="datetimepicker3" />
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="End" class="control-label"></label>
+                <label asp-for="End" class="control-label">Slutdatum</label>
                 <input asp-for="End" class="form-control" />
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Beskrivning</label>
                 <textarea asp-for="Description" class="form-control" rows="8"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contact" class="control-label"></label>
+                <label asp-for="Contact" class="control-label">Kontakt</label>
                 <input asp-for="Contact" class="form-control" />
                 <span asp-validation-for="Contact" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Skapa ny" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
 </div>
 
 @section Scripts {
