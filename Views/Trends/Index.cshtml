@@ -7,19 +7,19 @@
 <h1>Index</h1>   
 
 <p>
-    <a asp-action="Create">Create</a>
+    <a asp-action="Create">Skapa ny</a>
 </p>
 <table class="table table-dark">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Season)
+                Säsong
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Beskrivning
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TrendImages)
+                Bilder
             </th>
             <th></th>
         </tr>
@@ -41,9 +41,9 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
                 </td>
             </tr>
         }
