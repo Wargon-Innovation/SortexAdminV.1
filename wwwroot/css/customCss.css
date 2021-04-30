@@ -8,3 +8,20 @@
 .btn, btn-primary {
     box-shadow: 2px 2px 2px #000;
 }
+
+.btn-primary {
+    color: #111 !important;
+    background-color: #24d3dd !important;
+    outline: none !important;
+    border: none !important;
+    font-family: 'Libre Franklin', sans-serif;
+}
+
+    .btn-primary:hover
+    .btn-primary:active,
+    .btn-primary:visited,
+    .btn-primary:focus {
+        background-color: #24d3dd !important;
+        color: #333 !important;
+        outline: none;
+    }
