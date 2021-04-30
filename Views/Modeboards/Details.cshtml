@@ -4,33 +4,17 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Modeboard</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<h1>Detaljer</h1>
+<div class="card">
+    <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@Model.Name</h4>
+    <div class="card-body">
+        <h4 class="card-title">Namn </h4>
+        <h6 class="card-title">@Model.Name</h6>
+        <h4 class="card-title">Beskrivning </h4>
+        <h6 class="card-title">@Model.Description</h6>
+        <h4 class="card-title">Image</h4>
+        <h6 class="card-text">@Model.Image</h6>
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Ändra</a>
+        <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
+    </div>
 </div>
