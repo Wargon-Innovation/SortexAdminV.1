@@ -5,7 +5,7 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 /*Skapar linjen för att fördela texten ex mellan datum och beskrivning*/
 .line {
-    border-bottom: 2px solid #111;
+    border-bottom: 2px solid #24d3dd;
 }
 
 /*Navbar color*/
