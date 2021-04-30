@@ -26,6 +26,9 @@
         outline: none;
     }
 
-.card-header {
-    color: #333 !important;
+#DescriptionOnCard {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
