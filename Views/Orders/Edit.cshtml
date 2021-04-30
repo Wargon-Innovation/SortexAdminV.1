@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editera</h1>
 
 <h4>Order</h4>
 <hr />
@@ -14,41 +14,42 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Namn</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Start" class="control-label"></label>
+                <label asp-for="Start" class="control-label">Startdatum</label>
                 <input asp-for="Start" class="form-control" />
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="End" class="control-label"></label>
+                <label asp-for="End" class="control-label">Slutdatum</label>
                 <input asp-for="End" class="form-control" />
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="8"></textarea>
+                <label asp-for="Description" class="control-label">Beskrivning</label>
+                <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contact" class="control-label"></label>
+                <label asp-for="Contact" class="control-label">Kontakt</label>
                 <input asp-for="Contact" class="form-control" />
                 <span asp-validation-for="Contact" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Spara" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

@@ -25,3 +25,7 @@
         color: #333 !important;
         outline: none;
     }
+
+.card-header {
+    color: #333 !important;
+}
