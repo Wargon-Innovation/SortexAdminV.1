@@ -53,7 +53,7 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Fraction fraction)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Number")] Fraction fraction)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Fraction fraction)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Number")] Fraction fraction)
         {
             if (id != fraction.Id)
             {
