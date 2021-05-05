@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -253,6 +254,27 @@ namespace SortexAdminV._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            // HÄMTAR ALLA TRENDIMAGE RELATERDE TILL TREND ID
+            var result = await (from rowsTrendImgMM in _context.TrendImageMMs
+                                join rowsTrendImg in _context.TrendImages on rowsTrendImgMM.TrendImageId equals rowsTrendImg.Id
+                                where rowsTrendImgMM.TrendId == id
+                                select rowsTrendImg).ToListAsync();
+
+            foreach (var image in result)
+            {
+                if (image.FilePath != null)
+                {
+                    FileInfo file = new FileInfo(image.FilePath);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
+                _context.TrendImages.Remove(image);
+            }
+
+
+
             var trend = await _context.Trends.FindAsync(id);
             _context.Trends.Remove(trend);
             await _context.SaveChangesAsync();

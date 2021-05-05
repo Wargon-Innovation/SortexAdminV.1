@@ -11,11 +11,9 @@
 <form asp-action="Create" asp-controller="TrendImages" method="post" enctype="multipart/form-data">
     @for (int i = 0; i < @ViewBag.NumberOfImages; i++)
     {
-        <div class="row">
-            <div class="col-md-4">
-                <label for="file1">Filename: @i.ToString();</label>
-                <input type="file" name="files" id="@i.ToString();" />
-            </div>
+        <div class="form-group">
+            <label for="@i.ToString();">Filename: @i.ToString();</label>
+            <input type="file" name="files" id="@i.ToString();" />
         </div>
     }
     <input type="hidden" value="@ViewBag.TrendId" asp-for="TrendId" />

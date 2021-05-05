@@ -200,29 +200,11 @@ namespace SortexAdminV._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var trendImageMMs = await _context.TrendImageMMs.ToListAsync();
-            var trendImage = await _context.TrendImageMMs.ToListAsync();
-
-            var result = (from t1 in _context.TrendImageMMs
-                          join t2 in _context.TrendImages
-                          where t2. == id
-                          select ProductCategory.ProductCategoryId).SingleOrDefault();
-
-            from rader in db.Vardnadshavare
-            where rader.AnvNamn == anvNamn
-            select rader).FirstOrDefault();
-
-
+            
             var trendImage = await _context.TrendImages.FindAsync(id);
             _context.TrendImages.Remove(trendImage);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-
-            from raderEtik in db.Etik
-            join raderEtikBarn in db.Barn_Etik on raderEtik.Id equals raderEtikBarn.EtikId
-            join raderBarn in db.Barn on raderEtikBarn.BarnPersonnummer equals raderBarn.Personnummer
-            where raderBarn.SkolId == skolId
-            select raderEtik;
         }
 
         private bool TrendImageExists(int id)
