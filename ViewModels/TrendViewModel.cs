@@ -13,5 +13,7 @@ namespace SortexAdminV._1.ViewModels
         public string Description { get; set; }
 
         public List<String> TrendImages = new List<string>();
+
+        public int NumberOfImages { get; set; }
     }
 }

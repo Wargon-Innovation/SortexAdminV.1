@@ -97,58 +97,87 @@ namespace SortexAdminV._1.Controllers
             return View(trendView);
         }
 
+        //// GET: Trends/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+
         // GET: Trends/Create
-        public IActionResult Create()
+        public IActionResult CreateTrend()
         {
             return View();
         }
 
-        // POST: Trends/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TrendViewModel inputView)
+        public async Task<IActionResult> CreateTrend([Bind("Id,Season,Description,NumberOfImages")] TrendViewModel trendView)
         {
             var trend = new Trend();
- 
-            trend.Season = inputView.Season;
-            trend.Description = inputView.Description;
+            trend.Season = trendView.Season;
+            trend.Description = trendView.Description;
             if (ModelState.IsValid)
             {
                 _context.Add(trend);
                 await _context.SaveChangesAsync();
             }
-            
 
-            var trendImage = new TrendImage();
-            trendImage.Image = "Test";
-
-            _context.TrendImages.Add(trendImage);
-            await _context.SaveChangesAsync();
-           
-            
             var trendList = await _context.Trends.ToListAsync();
-            var trendImages = await _context.TrendImages.ToListAsync();
-
             var lastTrend = trendList.LastOrDefault();
-            var lastImage = trendImages.LastOrDefault();
 
+            trendView.Id = lastTrend.Id;
 
-            var trendImageMM = new TrendImageMM();
-            trendImageMM.TrendId = lastTrend.Id;
-            trendImageMM.TrendImageId = lastImage.Id;
+            return RedirectToAction("Create", "TrendImages", trendView);
 
-
-            if (ModelState.IsValid)
-            {
-                _context.TrendImageMMs.Add(trendImageMM);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(trend);
         }
+
+        // POST: Trends/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(TrendViewModel inputView)
+        //{
+        //    var trend = new Trend();
+
+        //    trend.Season = inputView.Season;
+
+        //    trend.Description = inputView.Description;
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(trend);
+        //        await _context.SaveChangesAsync();
+        //    }
+
+
+        //    var trendImage = new TrendImage();
+        //    trendImage.Image = "Test";
+
+        //    _context.TrendImages.Add(trendImage);
+        //    await _context.SaveChangesAsync();
+
+
+        //    var trendList = await _context.Trends.ToListAsync();
+        //    var trendImages = await _context.TrendImages.ToListAsync();
+
+        //    var lastTrend = trendList.LastOrDefault();
+        //    var lastImage = trendImages.LastOrDefault();
+
+
+        //    var trendImageMM = new TrendImageMM();
+        //    trendImageMM.TrendId = lastTrend.Id;
+        //    trendImageMM.TrendImageId = lastImage.Id;
+
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.TrendImageMMs.Add(trendImageMM);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return View(trend);
+        //}
 
         // GET: Trends/Edit/5
         public async Task<IActionResult> Edit(int? id)
