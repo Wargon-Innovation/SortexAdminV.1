@@ -5,32 +5,19 @@
 }
 
 <h1>Detaljer</h1>
-
-<div>
-    <h4>Brand</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Tillverkare
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Manufacturer)
-        </dd>
-        <dt class = "col-sm-2">
-            Kön
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt class="col-sm-2">
-            Klassificering
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Classification)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Ändra</a> |
-    <a asp-action="Index">Tillbaka</a>
+<div class="card">
+    <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@Model.Manufacturer</h4>
+    <div class="card-body">
+        <h5 class="card-title">Tillverkare</h5>
+        <p class="card-title">@Model.Manufacturer</p>
+        <p class="line"></p>
+        <h5 class="card-title">Kön</h5>
+        <p class="card-title">@Model.Gender</p>
+        <p class="line"></p>
+        <h5 class="card-title">Klassificering</h5>
+        <p class="card-text">@Model.Classification</p>
+        <p class="line"></p>
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Ändra</a>
+        <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
+    </div>
 </div>
