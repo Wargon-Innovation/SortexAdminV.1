@@ -56,16 +56,19 @@ namespace SortexAdminV._1.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BrandImagesUploadViewModel brandImage)
         {
+            //HÄMTA DATUM
+            DateTime localDate = DateTime.Now;
+            var date = localDate.ToString("yyyyMMddTHHmmssZ");
+
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
             string websiteURL = "http://localhost:39737/";
 
             string path = _environment.WebRootPath + "\\BrandImages\\";
-            string fileName = brandImage.Image.FileName.ToLower();
+            string fileName = date + brandImage.Image.FileName.ToLower();
             BrandImage newBrandImage = new BrandImage();
 
             if (ModelState.IsValid)

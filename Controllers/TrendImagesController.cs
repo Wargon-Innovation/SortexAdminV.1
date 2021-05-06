@@ -60,6 +60,11 @@ namespace SortexAdminV._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IEnumerable<IFormFile> files, TrendImagesUploadViewModel trend)
         {
+            //HÄMTA DATUM
+            DateTime localDate = DateTime.Now;
+            var date = localDate.ToString("yyyyMMddTHHmmssZ");
+
+
             string fileName;
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
             string websiteURL = "http://localhost:39737/";
@@ -67,7 +72,9 @@ namespace SortexAdminV._1.Controllers
             string path = _environment.WebRootPath + "\\TrendImages\\";
             foreach (var image in files)
             {
-                fileName = image.FileName.ToLower();
+
+
+                fileName = date + image.FileName.ToLower();
                 TrendImage newTrendImage = new TrendImage();
 
                 try
@@ -87,6 +94,7 @@ namespace SortexAdminV._1.Controllers
 
                         image.CopyTo(fileStream);
                         fileStream.Flush();
+
                     }
 
                     var trendImages = await _context.TrendImages.ToListAsync();
@@ -104,10 +112,8 @@ namespace SortexAdminV._1.Controllers
                     TempData["Result"] = "Något gick fel";
                     return RedirectToAction("Index");
                 }
-                
             }
-            return View();
-
+            return RedirectToAction("Index", "Trends");
         }
 
         // POST: TrendImages/Create
