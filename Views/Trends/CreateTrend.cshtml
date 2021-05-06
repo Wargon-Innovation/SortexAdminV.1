@@ -4,7 +4,7 @@
     ViewData["Title"] = "CreateTrend";
 }
 
-<h1>CreateTrend</h1>
+<h1>Skapa trend</h1>
 
 <h4>Trend</h4>
 <hr />
@@ -13,29 +13,29 @@
         <form asp-action="CreateTrend">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Season" class="control-label"></label>
+                <label asp-for="Season" class="control-label">Säsong</label>
                 <input asp-for="Season" class="form-control" />
                 <span asp-validation-for="Season" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label">Beskrivning</label>
+                <textarea asp-for="Description" class="form-control" rows="8"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfImages" class="control-label"></label>
+                <label asp-for="NumberOfImages" class="control-label">Antal bilder</label>
                 <input asp-for="NumberOfImages" class="form-control" />
                 <span asp-validation-for="NumberOfImages" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Skapa" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tillbaka</a>
 </div>
 
 @section Scripts {
