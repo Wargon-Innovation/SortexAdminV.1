@@ -137,6 +137,15 @@ namespace SortexAdminV._1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public RedirectToActionResult AddImageToTrend([Bind("Id,NumberOfImages")] TrendViewModel trendView)
+        {
+
+            return RedirectToAction("Create", "TrendImages", trendView);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTrend([Bind("Id,Season,Description,NumberOfImages")] TrendViewModel trendView)
         {
             var trend = new Trend();

@@ -47,7 +47,13 @@ namespace SortexAdminV._1.Controllers
 
             return View(trendImage);
         }
-
+        public IActionResult AddImages(int id)
+        {
+            var trend = _context.Trends.FirstOrDefaultAsync(m => m.Id == id);
+            var trendView = new TrendViewModel();
+            trendView.Id = trend.Id;
+            return View(trendView);
+        }
         // GET: TrendImages/Create
         public IActionResult Create(TrendViewModel trendView)
         {

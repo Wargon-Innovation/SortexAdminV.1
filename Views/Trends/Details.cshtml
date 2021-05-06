@@ -6,31 +6,27 @@
 
 <h1>Detaljer</h1>
 
-<div>
-    <h4>Trend</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Säsong
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Season)
-        </dd>
-        <dt class="col-sm-2">
-            Beskrivning
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            Bild
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TrendImages)
-        </dd>
-    </dl>
+<div class="card w-100">
+    <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@Model.Season</h4>
+    <div class="card-body border-light">
+        <h5 class="card-title">Beskrivning</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="line"></p>
+        <div class="row">
+            @foreach (var image in Model.TrendImages)
+            {
+                <div class="col-sm">
+                    <img src="@image" alt="..." class="img-thumbnail">
+                </div>
+            }
+        </div>
+        <p></p>
+        <p class="line"></p>
+        <a class="btn btn-primary" asp-action="AddImages" asp-controller="TrendImages" asp-route-id="@Model.Id">Lägg till bilder</a>
+        <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Ändra</a>
-    <a asp-action="Index">Tillbaka</a>
-</div>
+
+
+
+

@@ -14,6 +14,8 @@ namespace SortexAdminV._1.ViewModels
 
         public int TrendId { get; set; }
 
+        public int NumberOfImages { get; set; }
+
         //public List<IFormFile> images = new List<IFormFile>();
     }
 }

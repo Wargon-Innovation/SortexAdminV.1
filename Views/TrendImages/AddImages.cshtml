@@ -1,0 +1,23 @@
+﻿@model SortexAdminV._1.ViewModels.TrendViewModel
+@{
+    ViewData["Title"] = "AddImages";
+}
+
+<h1>Lägg till bilder</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddImageToTrend" asp-controller="Trends">
+                <div class="form-group">
+                    <label asp-for="NumberOfImages" class="control-label">Antal bilder</label>
+                    <input asp-for="NumberOfImages" class="form-control" />
+                    <span asp-validation-for="NumberOfImages" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <input type="submit" value="Lägg till" class="btn btn-primary" />
+                    <a class="btn btn-primary" asp-action="Index" asp-controller="Trends" >Tillbaka</a>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
