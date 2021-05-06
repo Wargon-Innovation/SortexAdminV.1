@@ -26,10 +26,28 @@ namespace SortexAdminV._1.Controllers
             //HÄMTA TRE TABELLER FRÅN DB
             //SKAPA LISTA FÖR VY
             var trendList = await _context.Trends.ToListAsync();
-            var trendImagesMM = await _context.TrendImageMMs.ToListAsync();
-            var trendImages = await _context.TrendImages.ToListAsync();
             List<TrendViewModel> trendViewList = new List<TrendViewModel>();
 
+            foreach(var trend in trendList)
+            {
+                TrendViewModel trendView = new TrendViewModel();
+                trendView.Id = trend.Id;
+                trendView.Season = trend.Season;
+                trendView.Description = trend.Description;
+
+                var result = await (from rowsTrendImageMM in _context.TrendImageMMs
+                                    join rowsTrendImage in _context.TrendImages on rowsTrendImageMM.TrendImageId equals rowsTrendImage.Id
+                                    where rowsTrendImageMM.TrendId == trend.Id
+                                    select rowsTrendImage.Image).ToListAsync();
+
+                foreach (var image in result)
+                {
+                    trendView.TrendImages.Add(image);
+                }
+                trendViewList.Add(trendView);
+            }
+
+            /*
             //LÄGG TILL TRENDER I VYLISTA
             foreach (var trend in trendList)
             {
@@ -53,7 +71,8 @@ namespace SortexAdminV._1.Controllers
                     }
                 }
                 trendViewList.Add(trendView);
-            } 
+            }
+            */
             return View(trendViewList);
         }
 
@@ -71,16 +90,12 @@ namespace SortexAdminV._1.Controllers
             {
                 return NotFound();
             }
-            //HÄMTA TRE TABELLER FRÅN DB
+            /*//HÄMTA TRE TABELLER FRÅN DB
             //SKAPA LISTA FÖR VY
             var trendList = await _context.Trends.ToListAsync();
             var trendImagesMM = await _context.TrendImageMMs.ToListAsync();
             var trendImages = await _context.TrendImages.ToListAsync();
-            var trendView = new TrendViewModel();
-
-            trendView.Id = trend.Id;
-            trendView.Season = trend.Season;
-            trendView.Description = trend.Description;
+            
 
             //OM ID STÄMMER LÄGG TILL BILDER PÅ VIEW OBJEKT
             foreach (var trendImage in trendImagesMM)
@@ -92,6 +107,22 @@ namespace SortexAdminV._1.Controllers
                         trendView.TrendImages.Add(image.Image);
                     }
                 }
+            }*/
+
+            var trendView = new TrendViewModel();
+
+            trendView.Id = trend.Id;
+            trendView.Season = trend.Season;
+            trendView.Description = trend.Description;
+
+            var result = await (from rowsTrendImageMM in _context.TrendImageMMs
+                                join rowsTrendImage in _context.TrendImages on rowsTrendImageMM.TrendImageId equals rowsTrendImage.Id
+                                where rowsTrendImageMM.TrendId == trend.Id
+                                select rowsTrendImage.Image).ToListAsync();
+
+            foreach (var image in result)
+            {
+                trendView.TrendImages.Add(image);
             }
 
 
