@@ -4,36 +4,21 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Radera</h1>
-
-<h3>Är du säker på att du vill radera arbetsuppgiften?</h3>
-<div>
-    <h4>Assignment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Namn
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Beskrivning
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            Roll
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Radera" class="btn btn-danger" />
-        <a asp-action="Index">Tillbaka</a>
-    </form>
+<h1>Radera @Model.Name</h1>
+<h3>Är du säker på att du vill radera order @Model.Name?</h3>
+<div class="card w-100">
+    <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@Model.Name</h4>
+    <div class="card-body">
+        <h5 class="card-title">Beskrivning</h5>
+        <p class="card-title">@Model.Description</p>
+        <p class="line"></p>
+        <h5 class="card-title">Roll</h5>
+        <p class="card-text">@Model.Role</p>
+        <p class="line"></p>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Radera" class="btn btn-danger" />
+            <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
+        </form>
+    </div>
 </div>
