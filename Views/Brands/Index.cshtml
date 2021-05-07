@@ -4,11 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="jumbotron">
+    <div class="text-center">
+        <img src="~/icons/brandicon.png" alt="BrandIcon" class="img-top" />
+    </div>
+    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <p class="line"></p>
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <p class="line"></p>
+    <a class="btn btn-primary" asp-action="Create">Skapa ny</a>
+    </p>
+</div>
 
-<p>
-    <a asp-action="Create">Skapa ny</a>
-</p>
 @foreach (var item in Model)
 {
     <div class="card" style="width: 18rem;">

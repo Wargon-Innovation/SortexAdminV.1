@@ -32,3 +32,11 @@
     text-overflow: ellipsis;
 }
 
+.jumbotron {
+    margin: 10px;
+    background-color: #222 !important;
+    border-style: solid;
+    border-color: #24d3dd;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
