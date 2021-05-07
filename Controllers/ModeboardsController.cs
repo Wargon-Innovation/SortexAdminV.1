@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace SortexAdminV._1.Controllers
     public class ModeboardsController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly INotyfService _notyf;
 
-        public ModeboardsController(SortexDBContext context)
+        public ModeboardsController(SortexDBContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Modeboards
@@ -59,6 +62,7 @@ namespace SortexAdminV._1.Controllers
             {
                 _context.Add(modeboard);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Du har lagt till fraktion " + modeboard.Name);
                 return RedirectToAction(nameof(Index));
             }
             return View(modeboard);
@@ -98,6 +102,7 @@ namespace SortexAdminV._1.Controllers
                 {
                     _context.Update(modeboard);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Du har uppdaterat modeboard " + modeboard.Name);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -141,6 +146,7 @@ namespace SortexAdminV._1.Controllers
             var modeboard = await _context.Modeboards.FindAsync(id);
             _context.Modeboards.Remove(modeboard);
             await _context.SaveChangesAsync();
+            _notyf.Success("Du har tagit bort modeboard " + modeboard.Name);
             return RedirectToAction(nameof(Index));
         }
 

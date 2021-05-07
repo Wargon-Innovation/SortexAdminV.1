@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace SortexAdminV._1.Controllers
     public class TrendsController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly INotyfService _notyf;
 
-        public TrendsController(SortexDBContext context)
+        public TrendsController(SortexDBContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Trends
@@ -200,6 +203,7 @@ namespace SortexAdminV._1.Controllers
                 {
                     _context.Update(trend);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Du har uppdaterat trend " + trend.Season);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -264,6 +268,7 @@ namespace SortexAdminV._1.Controllers
             var trend = await _context.Trends.FindAsync(id);
             _context.Trends.Remove(trend);
             await _context.SaveChangesAsync();
+            _notyf.Success("Du har tagit bort " + trend.Season);
             return RedirectToAction(nameof(Index));
         }
 

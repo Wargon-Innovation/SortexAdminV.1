@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace SortexAdminV._1.Controllers
     public class AssignmentsController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly INotyfService _notyf;
 
-        public AssignmentsController(SortexDBContext context)
+        public AssignmentsController(SortexDBContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Assignments
@@ -59,6 +62,7 @@ namespace SortexAdminV._1.Controllers
             {
                 _context.Add(assignment);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Du har lagt till uppdrag " + assignment.Name);
                 return RedirectToAction(nameof(Index));
             }
             return View(assignment);
@@ -98,6 +102,7 @@ namespace SortexAdminV._1.Controllers
                 {
                     _context.Update(assignment);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Du har uppdaterat uppdrag " + assignment.Name);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -141,6 +146,7 @@ namespace SortexAdminV._1.Controllers
             var assignment = await _context.Assignments.FindAsync(id);
             _context.Assignments.Remove(assignment);
             await _context.SaveChangesAsync();
+            _notyf.Success("Du har tagit bort uppdrag " + assignment.Name);
             return RedirectToAction(nameof(Index));
         }
 

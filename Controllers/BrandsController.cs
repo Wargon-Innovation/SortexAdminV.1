@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace SortexAdminV._1.Controllers
     public class BrandsController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly INotyfService _notyf;
 
-        public BrandsController(SortexDBContext context)
+        public BrandsController(SortexDBContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Brands
@@ -59,6 +62,7 @@ namespace SortexAdminV._1.Controllers
             {
                 _context.Add(brand);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Du har lagt till märket " + brand.Manufacturer);
                 return RedirectToAction(nameof(Index));
             }
             return View(brand);
@@ -98,6 +102,7 @@ namespace SortexAdminV._1.Controllers
                 {
                     _context.Update(brand);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Du har uppdaterat märket " + brand.Manufacturer);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -141,6 +146,7 @@ namespace SortexAdminV._1.Controllers
             var brand = await _context.Brands.FindAsync(id);
             _context.Brands.Remove(brand);
             await _context.SaveChangesAsync();
+            _notyf.Success("Du har tagit bort märket " + brand.Manufacturer);
             return RedirectToAction(nameof(Index));
         }
 

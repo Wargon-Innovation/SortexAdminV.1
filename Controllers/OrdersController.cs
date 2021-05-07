@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace SortexAdminV._1.Controllers
     public class OrdersController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly INotyfService _notyf;
 
-        public OrdersController(SortexDBContext context)
+        public OrdersController(SortexDBContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Orders
@@ -59,8 +62,10 @@ namespace SortexAdminV._1.Controllers
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Du har lagt till order " + order.Name);
                 return RedirectToAction(nameof(Index));
             }
+            _notyf.Error("Något gick fel");
             return View(order);
         }
 
@@ -98,6 +103,7 @@ namespace SortexAdminV._1.Controllers
                 {
                     _context.Update(order);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Du har uppdaterat order " + order.Name);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -112,6 +118,7 @@ namespace SortexAdminV._1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            _notyf.Error("Något gick fel");
             return View(order);
         }
 
@@ -141,6 +148,7 @@ namespace SortexAdminV._1.Controllers
             var order = await _context.Orders.FindAsync(id);
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
+            _notyf.Success("Du har tagit bort order " + order.Name);
             return RedirectToAction(nameof(Index));
         }
 

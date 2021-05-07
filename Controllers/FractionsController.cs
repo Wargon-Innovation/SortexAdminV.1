@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace SortexAdminV._1.Controllers
     public class FractionsController : Controller
     {
         private readonly SortexDBContext _context;
+        private readonly INotyfService _notyf;
 
-        public FractionsController(SortexDBContext context)
+        public FractionsController(SortexDBContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Fractions
@@ -59,8 +62,10 @@ namespace SortexAdminV._1.Controllers
             {
                 _context.Add(fraction);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Du har lagt till fraktion " + fraction.Name);
                 return RedirectToAction(nameof(Index));
             }
+            _notyf.Error("Något gick fel");
             return View(fraction);
         }
 
@@ -98,6 +103,7 @@ namespace SortexAdminV._1.Controllers
                 {
                     _context.Update(fraction);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Du har uppdaterat fraktion " + fraction.Name);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -112,6 +118,7 @@ namespace SortexAdminV._1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            _notyf.Error("Något gick fel");
             return View(fraction);
         }
 
@@ -141,6 +148,7 @@ namespace SortexAdminV._1.Controllers
             var fraction = await _context.Fractions.FindAsync(id);
             _context.Fractions.Remove(fraction);
             await _context.SaveChangesAsync();
+            _notyf.Success("Du har tagit bort fraktion " + fraction.Name);
             return RedirectToAction(nameof(Index));
         }
 
