@@ -1,4 +1,4 @@
-﻿@model SortexAdminV._1.Models.Brand
+﻿@model SortexAdminV._1.ViewModels.BrandUploadViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -26,6 +26,18 @@
                 <label asp-for="Classification" class="control-label">Klassificering</label>
                 <input asp-for="Classification" class="form-control" />
                 <span asp-validation-for="Classification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label">
+                    Taggar <span class="small">(separera varje enskild tagg med ett mellanrum)</span>
+                </label>
+                <textarea asp-for="Tags" class="form-control" rows="2" cols="20"></textarea>
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfImages" class="control-label">Antal bilder att ladda upp</label>
+                <input asp-for="NumberOfImages" class="form-control" />
+                <span asp-validation-for="NumberOfImages" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Skapa" class="btn btn-primary" />

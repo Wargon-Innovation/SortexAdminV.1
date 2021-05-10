@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SortexAdminV._1.Models;
+using SortexAdminV._1.ViewModels;
 
 namespace SortexAdminV._1.Controllers
 {
@@ -42,6 +43,13 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
+            List<string> brandTagList = await (from rowsTag in _context.Tags
+                                            join rowsBrandTag in _context.BrandTagMMs on rowsTag.Id equals rowsBrandTag.Id
+                                            where rowsBrandTag.BrandId == id
+                                            select rowsTag.Value).ToListAsync();
+
+            ViewData["tags"] = brandTagList;
+
             return View(brand);
         }
 
@@ -56,8 +64,55 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Manufacturer,Gender,Classification")] Brand brand)
+        public async Task<IActionResult> Create([Bind("Id,Manufacturer,Gender,Classification,NumberOfImages,Tags")] BrandUploadViewModel brand)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    //LADDA UPP MÄRKET
+                    Brand newBrand = new Brand();
+
+                    newBrand.Manufacturer = brand.Manufacturer;
+                    newBrand.Gender = brand.Gender;
+                    newBrand.Classification = brand.Classification;
+
+                    _context.Add(newBrand);
+                    await _context.SaveChangesAsync();
+
+                    //LADDA UPP ALLA TAGGAR
+                    int brandId = newBrand.Id;
+                    string[] tags = brand.Tags.Split(' ');
+                    foreach (var tag in tags)
+                    {
+                        //SPARA VARJE TAGG I DATABASEN
+                        Tag newTag = new Tag();
+                        newTag.Value = tag;
+
+                        _context.Add(newTag);
+                        await _context.SaveChangesAsync();
+
+                        //SPARA KOPPLINGEN
+                        int tagId = newTag.Id;
+
+                        BrandTagMM brandTagMM = new BrandTagMM();
+                        brandTagMM.BrandId = brandId;
+                        brandTagMM.TagId = tagId;
+                        _context.Add(brandTagMM);
+                        await _context.SaveChangesAsync();
+
+
+                    }
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            return View(brand);
+            /*
             if (ModelState.IsValid)
             {
                 _context.Add(brand);
@@ -66,6 +121,7 @@ namespace SortexAdminV._1.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(brand);
+            */
         }
 
         // GET: Brands/Edit/5
@@ -143,6 +199,8 @@ namespace SortexAdminV._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //TODO: TA ÄVEN BORT ALLA TAGGAR TILLHÖRANDE DETTA MÄRKE
+
             var brand = await _context.Brands.FindAsync(id);
             _context.Brands.Remove(brand);
             await _context.SaveChangesAsync();
