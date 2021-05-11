@@ -65,7 +65,9 @@ namespace SortexAdminV._1.Controllers
             var date = localDate.ToString("yyyyMMddTHHmmssZ");
 
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
-            string websiteURL = "http://localhost:39737/";
+            //string websiteURL = "http://localhost:39737/";
+            string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
+
 
             string path = _environment.WebRootPath + "\\BrandImages\\";
             string fileName = date + brandImage.Image.FileName.ToLower();
