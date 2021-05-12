@@ -25,6 +25,16 @@
             }
         </p>
         <p class="line"></p>
+        <div class="row">
+            @foreach (var image in ViewData["images"] as IList<string>)
+            {
+                <div class="col-sm">
+                    <img src="@image" alt="..." class="img-thumbnail">
+                </div>
+            }
+        </div>
+        <p></p>
+        <p class="line"></p>
         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Ändra</a>
         <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
     </div>

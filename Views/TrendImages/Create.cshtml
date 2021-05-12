@@ -13,7 +13,7 @@
         </div>
         <p class="line"></p>
     }
-    <input type="hidden" value="@ViewBag.TrendId" asp-for="TrendId" />
+    <input type="number" readonly value="@ViewBag.TrendId" asp-for="TrendId" />
     <div class="form-group">
         <input type="submit" value="Lägg till" class="btn btn-primary" />
         <a class="btn btn-primary" asp-action="Index" asp-controller="Trends" >Tillbaka</a>

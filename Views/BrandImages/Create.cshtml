@@ -4,33 +4,21 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>BrandImage</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId" class ="form-control" asp-items="ViewBag.BrandId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<h1>Lägg till Bilder</h1>
+<form asp-action="Create" asp-controller="BrandImages" method="post" enctype="multipart/form-data">
+    @for (int i = 0; i < @ViewBag.NumberOfImages; i++)
+    {
+        <div class="form-group">
+            <input type="file" name="files" />
+        </div>
+        <p class="line"></p>
+    }
+    <input type="hidden" value="@ViewBag.BrandId" asp-for="BrandId" />
+    <div class="form-group">
+        <input type="submit" value="Lägg till" class="btn btn-primary" />
+        <a class="btn btn-primary" asp-action="Index" asp-controller="Brands">Tillbaka</a>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

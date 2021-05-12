@@ -79,8 +79,6 @@ namespace SortexAdminV._1.Controllers
             string path = _environment.WebRootPath + "\\Uploads\\TrendImages\\";
             foreach (var image in files)
             {
-
-
                 fileName = date + image.FileName.ToLower();
                 TrendImage newTrendImage = new TrendImage();
 
@@ -101,7 +99,6 @@ namespace SortexAdminV._1.Controllers
 
                         image.CopyTo(fileStream);
                         fileStream.Flush();
-
                     }
 
                     var trendImages = await _context.TrendImages.ToListAsync();

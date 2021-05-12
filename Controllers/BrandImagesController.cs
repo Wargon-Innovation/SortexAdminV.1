@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -50,31 +51,31 @@ namespace SortexAdminV._1.Controllers
         }
 
         // GET: BrandImages/Create
-        public IActionResult Create()
+        public IActionResult Create(BrandUploadViewModel brand)
         {
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id");
+            ViewBag.BrandId = brand.Id;
+            ViewBag.NumberOfImages = brand.NumberOfImages;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BrandImagesUploadViewModel brandImage)
+        public async Task<IActionResult> Create(IEnumerable<IFormFile> files, BrandImagesUploadViewModel brandImage)
         {
-            //HÄMTA DATUM
             DateTime localDate = DateTime.Now;
             var date = localDate.ToString("yyyyMMddTHHmmssZ");
 
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
-            //string websiteURL = "http://localhost:39737/";
-            string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
+            string websiteURL = "http://localhost:39737/";
+            //string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
 
 
             string path = _environment.WebRootPath + "\\Uploads\\BrandImages\\";
-            string fileName = date + brandImage.Image.FileName.ToLower();
-            BrandImage newBrandImage = new BrandImage();
-
-            if (ModelState.IsValid)
+            string fileName;
+            foreach (var image in files)
             {
+                fileName = date + image.FileName.ToLower();
+                BrandImage newBrandImage = new BrandImage();
                 try
                 {
                     //KOLLA OM BILDMAPPEN FINNS
@@ -82,33 +83,26 @@ namespace SortexAdminV._1.Controllers
                     {
                         Directory.CreateDirectory(path);
                     }
-
-                    //SKAPA FILEN I BILDMAPPEN
                     using (FileStream fileStream = System.IO.File.Create(path + fileName))
                     {
                         newBrandImage.Image = websiteURL + "Uploads/BrandImages/" + fileName;
-                        newBrandImage.BrandId = brandImage.BrandId;
                         newBrandImage.FilePath = path + fileName;
+                        newBrandImage.BrandId = brandImage.BrandId;
                         _context.Add(newBrandImage);
                         await _context.SaveChangesAsync();
 
-                        brandImage.Image.CopyTo(fileStream);
+                        image.CopyTo(fileStream);
                         fileStream.Flush();
-
-                        return RedirectToAction(nameof(Index));
                     }
                 }
-                catch (Exception e)
+                catch(Exception)
                 {
-                    //TempData["Result"] = "Det gick inte uppdatera profilbilden";
-                    ViewBag.Error = e.Message;
+                    TempData["Result"] = "Det gick inte att lägga till bilderna";
                     return RedirectToAction("Index");
                 }
-
             }
 
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id", brandImage.BrandId);
-            return View(brandImage);
+            return RedirectToAction("Index", "Brands");
         }
 
         // GET: BrandImages/Edit/5

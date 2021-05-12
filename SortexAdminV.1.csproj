@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\BrandImages\**" />
+    <Compile Remove="wwwroot\TrendImages\**" />
+    <Content Remove="wwwroot\BrandImages\**" />
+    <Content Remove="wwwroot\TrendImages\**" />
+    <EmbeddedResource Remove="wwwroot\BrandImages\**" />
+    <EmbeddedResource Remove="wwwroot\TrendImages\**" />
+    <None Remove="wwwroot\BrandImages\**" />
+    <None Remove="wwwroot\TrendImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -20,8 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\BrandImages\" />
-    <Folder Include="wwwroot\TrendImages\" />
+    <Folder Include="wwwroot\Uploads\BrandImages\" />
   </ItemGroup>
 
 </Project>

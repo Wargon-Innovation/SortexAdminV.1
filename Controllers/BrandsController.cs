@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
@@ -43,12 +44,20 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
+            //HÄMTA ALLA TAGGAR
             List<string> brandTagList = await (from rowsTag in _context.Tags
                                             join rowsBrandTag in _context.BrandTagMMs on rowsTag.Id equals rowsBrandTag.Id
                                             where rowsBrandTag.BrandId == id
                                             select rowsTag.Value).ToListAsync();
 
             ViewData["tags"] = brandTagList;
+
+            //HÄMTA ALLA BILDER
+            List<string> brandImages = await (from rowsImages in _context.BrandImages
+                                              join rowsBrand in _context.Brands on rowsImages.BrandId equals rowsBrand.Id
+                                              where rowsBrand.Id == id
+                                              select rowsImages.Image).ToListAsync();
+            ViewData["images"] = brandImages;
 
             return View(brand);
         }
@@ -81,6 +90,20 @@ namespace SortexAdminV._1.Controllers
                     _context.Add(newBrand);
                     await _context.SaveChangesAsync();
 
+                    //SÄTT BRANDID FÖR ATT SKICKA TILL CREATEBRANDIMAGE
+                    brand.Id = newBrand.Id;
+
+                    //KOLLA OM DET FINNS NÅGRA TAGGAR
+                    if (brand.Tags == null)
+                    {
+                        //KOLLA OM BILDER SKA LADDAS UPP
+                        if (brand.NumberOfImages <= 0 || brand.NumberOfImages == 0)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                        return RedirectToAction("Create", "BrandImages", brand);
+                    }
+
                     //LADDA UPP ALLA TAGGAR
                     int brandId = newBrand.Id;
                     string[] tags = brand.Tags.Split(' ');
@@ -101,27 +124,15 @@ namespace SortexAdminV._1.Controllers
                         brandTagMM.TagId = tagId;
                         _context.Add(brandTagMM);
                         await _context.SaveChangesAsync();
-
-
                     }
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Create", "BrandImages", brand);
                 }
                 catch (Exception)
                 {
-
+                    return View(brand);
                 }
             }
             return View(brand);
-            /*
-            if (ModelState.IsValid)
-            {
-                _context.Add(brand);
-                await _context.SaveChangesAsync();
-                _notyf.Success("Du har lagt till märket " + brand.Manufacturer);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(brand);
-            */
         }
 
         // GET: Brands/Edit/5
@@ -199,7 +210,40 @@ namespace SortexAdminV._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //TODO: TA ÄVEN BORT ALLA TAGGAR TILLHÖRANDE DETTA MÄRKE
+            //TA BORT ALLA TAGGAR TILLHÖRANDE DETTA MÄRKE
+            var tags = await (from rowsTags in _context.Tags
+                              join rowsBrandTags in _context.BrandTagMMs on rowsTags.Id equals rowsBrandTags.TagId
+                              where rowsBrandTags.BrandId == id
+                              select rowsTags).ToListAsync();
+
+            if(tags.Count > 0 || tags != null)
+            {
+                foreach (var tag in tags)
+                {
+                    _context.Tags.Remove(tag);
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            //TA BORT ALLA BILDER TILLHÖRANDE DETTA MÄRKE
+            var images = await (from rowsImages in _context.BrandImages
+                                where rowsImages.BrandId == id
+                                select rowsImages).ToListAsync();
+
+            if(images.Count > 0 || images != null)
+            {
+                foreach (var brandImage in images)
+                {
+                    if (brandImage.FilePath != null)
+                    {
+                        FileInfo file = new FileInfo(brandImage.FilePath);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                    }
+                }
+            }
 
             var brand = await _context.Brands.FindAsync(id);
             _context.Brands.Remove(brand);
