@@ -69,7 +69,7 @@ namespace SortexAdminV._1.Controllers
             string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
 
 
-            string path = _environment.WebRootPath + "\\BrandImages\\";
+            string path = _environment.WebRootPath + "\\Uploads\\BrandImages\\";
             string fileName = date + brandImage.Image.FileName.ToLower();
             BrandImage newBrandImage = new BrandImage();
 
@@ -86,7 +86,7 @@ namespace SortexAdminV._1.Controllers
                     //SKAPA FILEN I BILDMAPPEN
                     using (FileStream fileStream = System.IO.File.Create(path + fileName))
                     {
-                        newBrandImage.Image = websiteURL + "\\BrandImages\\" + fileName;
+                        newBrandImage.Image = websiteURL + "Uploads/BrandImages/" + fileName;
                         newBrandImage.BrandId = brandImage.BrandId;
                         newBrandImage.FilePath = path + fileName;
                         _context.Add(newBrandImage);
@@ -98,9 +98,10 @@ namespace SortexAdminV._1.Controllers
                         return RedirectToAction(nameof(Index));
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    TempData["Result"] = "Det gick inte uppdatera profilbilden";
+                    //TempData["Result"] = "Det gick inte uppdatera profilbilden";
+                    ViewBag.Error = e.Message;
                     return RedirectToAction("Index");
                 }
 

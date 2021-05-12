@@ -76,7 +76,7 @@ namespace SortexAdminV._1.Controllers
             //string websiteURL = "http://localhost:39737/";
             string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
 
-            string path = _environment.WebRootPath + "\\TrendImages\\";
+            string path = _environment.WebRootPath + "\\Uploads\\TrendImages\\";
             foreach (var image in files)
             {
 
@@ -94,7 +94,7 @@ namespace SortexAdminV._1.Controllers
 
                     using (FileStream fileStream = System.IO.File.Create(path + fileName))
                     {
-                        newTrendImage.Image = websiteURL + "\\TrendImages\\" + fileName;
+                        newTrendImage.Image = websiteURL + "Uploads/TrendImages/" + fileName;
                         newTrendImage.FilePath = path + fileName;
                         _context.Add(newTrendImage);
                         await _context.SaveChangesAsync();
@@ -114,9 +114,10 @@ namespace SortexAdminV._1.Controllers
                     _context.Add(trendImageMM);
                     await _context.SaveChangesAsync();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    TempData["Result"] = "Något gick fel";
+                    //TempData["Result"] = "Något gick fel";
+                    ViewBag.Error = e.Message;
                     return RedirectToAction("Index");
                 }
             }
