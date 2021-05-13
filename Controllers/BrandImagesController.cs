@@ -49,7 +49,13 @@ namespace SortexAdminV._1.Controllers
 
             return View(brandImage);
         }
-
+        public IActionResult AddImages(int id)
+        {
+            var brand = _context.Brands.FirstOrDefaultAsync(m => m.Id == id);
+            var brandView = new BrandUploadViewModel();
+            brandView.Id = brand.Id;
+            return View(brandView);
+        }
         // GET: BrandImages/Create
         public IActionResult Create(BrandUploadViewModel brand)
         {
