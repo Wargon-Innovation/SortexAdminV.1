@@ -12,7 +12,7 @@
         @foreach (var tag in Model)
         {
             <div class="form-group">
-                <input type="checkbox" id="@tag.Id" name="selectedImages" value="@tag.Id" />
+                <input type="checkbox" id="@tag.Id" name="selectedTags" value="@tag.Id" />
                 <label for="@tag.Id">@tag.Value</label>
             </div>
         }
