@@ -124,25 +124,41 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
-            var tag = await _context.Tags
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
+            var tags = await (from rowsTag in _context.Tags
+                              join rowsBrandTagMM in _context.BrandTagMMs on rowsTag.Id equals rowsBrandTagMM.TagId
+                              join rowsBrand in _context.Brands on rowsBrandTagMM.BrandId equals rowsBrand.Id
+                              where rowsBrand.Id == id
+                              select rowsTag).ToListAsync();
+
+            if (tags == null)
             {
                 return NotFound();
             }
 
-            return View(tag);
+            return View(tags);
         }
 
         // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(List<int> selectedTags)
         {
-            var tag = await _context.Tags.FindAsync(id);
-            _context.Tags.Remove(tag);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                foreach (var tagId in selectedTags)
+                {
+                    var tag = await (from rowsTag in _context.Tags
+                                     where rowsTag.Id == tagId
+                                     select rowsTag).FirstOrDefaultAsync();
+                    _context.Tags.Remove(tag);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Brands");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Brands");
+            }
         }
 
         public IActionResult AddTags(int id)
