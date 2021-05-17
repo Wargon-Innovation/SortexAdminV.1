@@ -1,0 +1,32 @@
+﻿@model SortexAdminV._1.ViewModels.BrandUploadViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Lägg till taggar</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddTags">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" value="@Model.Id"/>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label">
+                    Taggar <span class="small">(separera varje enskild tagg med ett mellanrum)</span>
+                </label>
+                <textarea asp-for="Tags" class="form-control" rows="2" cols="20"></textarea>
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Skapa" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="Index">Tillbaka</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

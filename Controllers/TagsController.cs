@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SortexAdminV._1.Models;
+using SortexAdminV._1.ViewModels;
 
 namespace SortexAdminV._1.Controllers
 {
@@ -142,6 +143,46 @@ namespace SortexAdminV._1.Controllers
             _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult AddTags(int id)
+        {
+            BrandUploadViewModel brandView = new BrandUploadViewModel();
+            brandView.Id = id;
+            return View(brandView);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTags(BrandUploadViewModel brandTags)
+        {
+            try
+            {
+                int brandId = brandTags.Id;
+                string[] tags = brandTags.Tags.Split(' ');
+                foreach (var tag in tags)
+                {
+                    //SPARA VARJE TAGG I DATABASEN
+                    Tag newTag = new Tag();
+                    newTag.Value = tag;
+
+                    _context.Add(newTag);
+                    await _context.SaveChangesAsync();
+
+                    //SPARA KOPPLINGEN
+                    int tagId = newTag.Id;
+
+                    BrandTagMM brandTagMM = new BrandTagMM();
+                    brandTagMM.BrandId = brandId;
+                    brandTagMM.TagId = tagId;
+                    _context.Add(brandTagMM);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Brands");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Brands");
+            }
         }
 
         private bool TagExists(int id)
