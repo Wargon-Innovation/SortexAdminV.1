@@ -40,3 +40,9 @@
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 }
+
+.img-delete {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}

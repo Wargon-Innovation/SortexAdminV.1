@@ -123,23 +123,7 @@ namespace SortexAdminV._1.Controllers
             return RedirectToAction("Index", "Trends");
         }
 
-        // POST: TrendImages/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Image")] TrendImage trendImage)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(trendImage);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(trendImage);
-        //}
 
-        // GET: TrendImages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -155,9 +139,6 @@ namespace SortexAdminV._1.Controllers
             return View(trendImage);
         }
 
-        // POST: TrendImages/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Image")] TrendImage trendImage)
@@ -198,26 +179,51 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
-            var trendImage = await _context.TrendImages
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (trendImage == null)
+            
+
+            var trendImages = await (from rowsTrendImages in _context.TrendImages
+                                join rowsTrendImagesMM in _context.TrendImageMMs on rowsTrendImages.Id equals rowsTrendImagesMM.TrendImageId
+                                join rowsTrends in _context.Trends on rowsTrendImagesMM.TrendId equals rowsTrends.Id
+                                where rowsTrends.Id == id
+                                select rowsTrendImages).ToListAsync();
+
+            if (trendImages == null)
             {
                 return NotFound();
             }
 
-            return View(trendImage);
+            return View(trendImages);
         }
 
         // POST: TrendImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(List<int> selectedImages)
         {
-            
-            var trendImage = await _context.TrendImages.FindAsync(id);
-            _context.TrendImages.Remove(trendImage);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            try
+            {
+                foreach (var imageId in selectedImages)
+                {
+                    var image = await (from rowsTrendImage in _context.TrendImages
+                                       where rowsTrendImage.Id == imageId
+                                       select rowsTrendImage).FirstOrDefaultAsync();
+
+                    FileInfo file = new FileInfo(image.FilePath);
+                    if (file.Exists)
+                    {
+                        _context.TrendImages.Remove(image);
+                        await _context.SaveChangesAsync();
+                        file.Delete();
+                    }
+
+                }
+                return RedirectToAction("Index", "Trends");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Trends");
+            }
         }
 
         private bool TrendImageExists(int id)

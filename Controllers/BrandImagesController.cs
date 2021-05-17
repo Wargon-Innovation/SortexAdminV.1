@@ -172,34 +172,46 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
-            var brandImage = await _context.BrandImages
-                .Include(b => b.Brand)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brandImage == null)
+            var brandImages = await (from rowsBrandImages in _context.BrandImages
+                                     where rowsBrandImages.BrandId == id
+                                     select rowsBrandImages).ToListAsync();
+            if (brandImages == null)
             {
                 return NotFound();
             }
 
-            return View(brandImage);
+            return View(brandImages);
         }
 
         // POST: BrandImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(List<int> selectedImages)
         {
-            var brandImage = await _context.BrandImages.FindAsync(id);
-            if(brandImage.FilePath != null)
+            try
             {
-                FileInfo file = new FileInfo(brandImage.FilePath);
-                if (file.Exists)
+                foreach (var imageId in selectedImages)
                 {
-                    file.Delete();
+                    var image = await (from rowsBrandImage in _context.BrandImages
+                                       where rowsBrandImage.Id == imageId
+                                       select rowsBrandImage).FirstOrDefaultAsync();
+
+                    FileInfo file = new FileInfo(image.FilePath);
+                    if (file.Exists)
+                    {
+                        _context.BrandImages.Remove(image);
+                        await _context.SaveChangesAsync();
+                        file.Delete();
+                    }
+
                 }
+                return RedirectToAction("Index", "Brands");
             }
-            _context.BrandImages.Remove(brandImage);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Brands");
+            }
+            
         }
 
         private bool BrandImageExists(int id)
