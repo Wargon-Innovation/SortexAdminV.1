@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,13 @@ namespace SortexAdminV._1.Controllers
     {
         private readonly SortexDBContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly INotyfService _notyf;
 
-        public TrendImagesController(SortexDBContext context, IWebHostEnvironment environment)
+        public TrendImagesController(SortexDBContext context, IWebHostEnvironment environment, INotyfService notyf)
         {
             _context = context;
             _environment = environment;
+            _notyf = notyf;
         }
 
         // GET: TrendImages
@@ -58,7 +61,6 @@ namespace SortexAdminV._1.Controllers
         public IActionResult Create(TrendViewModel trendView)
         {
             ViewBag.TrendId = trendView.Id;
-
             ViewBag.NumberOfImages = trendView.NumberOfImages;
             return View();
         }
@@ -73,8 +75,8 @@ namespace SortexAdminV._1.Controllers
 
             string fileName;
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
-            //string websiteURL = "http://localhost:39737/";
-            string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
+            string websiteURL = "http://localhost:39737/";
+            //string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
 
             string path = _environment.WebRootPath + "\\Uploads\\TrendImages\\";
             foreach (var image in files)

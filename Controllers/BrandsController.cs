@@ -61,6 +61,14 @@ namespace SortexAdminV._1.Controllers
 
             return View(brand);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public RedirectToActionResult AddImageToBrand([Bind("Id,NumberOfImages")] BrandUploadViewModel brandView)
+        {
+
+            return RedirectToAction("Create", "BrandImages", brandView);
+
+        }
 
         // GET: Brands/Create
         public IActionResult Create()

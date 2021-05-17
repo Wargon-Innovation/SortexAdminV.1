@@ -49,33 +49,6 @@ namespace SortexAdminV._1.Controllers
                 }
                 trendViewList.Add(trendView);
             }
-
-            /*
-            //LÄGG TILL TRENDER I VYLISTA
-            foreach (var trend in trendList)
-            {
-                var trendView = new TrendViewModel();
-                trendView.Id = trend.Id;
-                trendView.Season = trend.Season;
-                trendView.Description = trend.Description;
-
-                //OM ID STÄMMER LÄGG TILL BILDER PÅ VIEW OBJEKT
-                foreach (var imageMM in trendImagesMM)
-                {
-                    if (trend.Id == imageMM.TrendId)
-                    {
-                        foreach (var image in trendImages)
-                        {
-                            if (image.Id == imageMM.TrendImageId)
-                            {
-                                trendView.TrendImages.Add(image.Image);
-                            }
-                        }
-                    }
-                }
-                trendViewList.Add(trendView);
-            }
-            */
             return View(trendViewList);
         }
 
@@ -93,24 +66,6 @@ namespace SortexAdminV._1.Controllers
             {
                 return NotFound();
             }
-            /*//HÄMTA TRE TABELLER FRÅN DB
-            //SKAPA LISTA FÖR VY
-            var trendList = await _context.Trends.ToListAsync();
-            var trendImagesMM = await _context.TrendImageMMs.ToListAsync();
-            var trendImages = await _context.TrendImages.ToListAsync();
-            
-
-            //OM ID STÄMMER LÄGG TILL BILDER PÅ VIEW OBJEKT
-            foreach (var trendImage in trendImagesMM)
-            {
-                if (trend.Id == trendImage.Id)
-                {
-                    foreach (var image in trendImages)
-                    {
-                        trendView.TrendImages.Add(image.Image);
-                    }
-                }
-            }*/
 
             var trendView = new TrendViewModel();
 
