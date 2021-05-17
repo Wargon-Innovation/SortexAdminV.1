@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,13 @@ namespace SortexAdminV._1.Controllers
     {
         private readonly SortexDBContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly INotyfService _notyf;
 
-        public BrandImagesController(SortexDBContext context, IWebHostEnvironment environment)
+        public BrandImagesController(SortexDBContext context, IWebHostEnvironment environment, INotyfService notyf)
         {
             _context = context;
             _environment = environment;
+            _notyf = notyf;
         }
 
         // GET: BrandImages
@@ -78,6 +81,7 @@ namespace SortexAdminV._1.Controllers
 
             string path = _environment.WebRootPath + "\\Uploads\\BrandImages\\";
             string fileName;
+            var numberOfImages = 0;
             foreach (var image in files)
             {
                 fileName = date + image.FileName.ToLower();
@@ -99,15 +103,16 @@ namespace SortexAdminV._1.Controllers
 
                         image.CopyTo(fileStream);
                         fileStream.Flush();
+                        numberOfImages += 1;
                     }
                 }
                 catch(Exception)
                 {
-                    TempData["Result"] = "Det gick inte att lägga till bilderna";
+                    _notyf.Error("Något gick fel");
                     return RedirectToAction("Index");
                 }
             }
-
+            _notyf.Success("Du har lagt till " +  numberOfImages + " bilder till märket");
             return RedirectToAction("Index", "Brands");
         }
 
@@ -205,10 +210,12 @@ namespace SortexAdminV._1.Controllers
                     }
 
                 }
+                _notyf.Success("Du har tagit bort " + selectedImages.Count + " bilder från märket");
                 return RedirectToAction("Index", "Brands");
             }
             catch (Exception)
             {
+                _notyf.Error("Något gick fel");
                 return RedirectToAction("Index", "Brands");
             }
             

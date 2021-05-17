@@ -78,6 +78,7 @@ namespace SortexAdminV._1.Controllers
             string websiteURL = "http://localhost:39737/";
             //string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
 
+            trend.NumberOfImages = 0;
             string path = _environment.WebRootPath + "\\Uploads\\TrendImages\\";
             foreach (var image in files)
             {
@@ -98,7 +99,6 @@ namespace SortexAdminV._1.Controllers
                         newTrendImage.FilePath = path + fileName;
                         _context.Add(newTrendImage);
                         await _context.SaveChangesAsync();
-
                         image.CopyTo(fileStream);
                         fileStream.Flush();
                     }
@@ -112,6 +112,8 @@ namespace SortexAdminV._1.Controllers
 
                     _context.Add(trendImageMM);
                     await _context.SaveChangesAsync();
+                    trend.NumberOfImages += 1;
+                    
                 }
                 catch (Exception e)
                 {
@@ -120,6 +122,7 @@ namespace SortexAdminV._1.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            _notyf.Success("Du har lagt till " + trend.NumberOfImages + " bilder till trenden");
             return RedirectToAction("Index", "Trends");
         }
 
@@ -159,7 +162,8 @@ namespace SortexAdminV._1.Controllers
                 {
                     if (!TrendImageExists(trendImage.Id))
                     {
-                        return NotFound();
+                        
+                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
@@ -218,10 +222,12 @@ namespace SortexAdminV._1.Controllers
                     }
 
                 }
+                _notyf.Success("Du har tagit bort " + selectedImages.Count + " bilder från trenden");
                 return RedirectToAction("Index", "Trends");
             }
             catch (Exception)
             {
+                _notyf.Error("Något gick fel");
                 return RedirectToAction("Index", "Trends");
             }
         }

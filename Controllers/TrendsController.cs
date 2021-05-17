@@ -113,6 +113,7 @@ namespace SortexAdminV._1.Controllers
             {
                 _context.Add(trend);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Du har lagt till trenden " + trend.Season);
             }
 
             var trendList = await _context.Trends.ToListAsync();

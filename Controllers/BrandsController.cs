@@ -102,37 +102,38 @@ namespace SortexAdminV._1.Controllers
                     brand.Id = newBrand.Id;
 
                     //KOLLA OM DET FINNS NÅGRA TAGGAR
-                    if (brand.Tags == null)
+                    if (brand.Tags != null)
                     {
-                        //KOLLA OM BILDER SKA LADDAS UPP
-                        if (brand.NumberOfImages <= 0 || brand.NumberOfImages == 0)
+                        //LADDA UPP ALLA TAGGAR
+                        int brandId = newBrand.Id;
+                        string[] tags = brand.Tags.Split(' ');
+                        foreach (var tag in tags)
                         {
-                            return RedirectToAction("Index");
+                            //SPARA VARJE TAGG I DATABASEN
+                            Tag newTag = new Tag();
+                            newTag.Value = tag;
+
+                            _context.Add(newTag);
+                            await _context.SaveChangesAsync();
+
+                            //SPARA KOPPLINGEN
+                            int tagId = newTag.Id;
+
+                            BrandTagMM brandTagMM = new BrandTagMM();
+                            brandTagMM.BrandId = brandId;
+                            brandTagMM.TagId = tagId;
+                            _context.Add(brandTagMM);
+                            await _context.SaveChangesAsync();
                         }
-                        return RedirectToAction("Create", "BrandImages", brand);
-                    }
 
-                    //LADDA UPP ALLA TAGGAR
-                    int brandId = newBrand.Id;
-                    string[] tags = brand.Tags.Split(' ');
-                    foreach (var tag in tags)
+                    }
+                    //KOLLA OM BILDER SKA LADDAS UPP
+                    if (brand.NumberOfImages <= 0 || brand.NumberOfImages == 0)
                     {
-                        //SPARA VARJE TAGG I DATABASEN
-                        Tag newTag = new Tag();
-                        newTag.Value = tag;
-
-                        _context.Add(newTag);
-                        await _context.SaveChangesAsync();
-
-                        //SPARA KOPPLINGEN
-                        int tagId = newTag.Id;
-
-                        BrandTagMM brandTagMM = new BrandTagMM();
-                        brandTagMM.BrandId = brandId;
-                        brandTagMM.TagId = tagId;
-                        _context.Add(brandTagMM);
-                        await _context.SaveChangesAsync();
+                        _notyf.Success("Du har lagt till märket " + brand.Manufacturer);
+                        return RedirectToAction("Index");
                     }
+                    _notyf.Success("Du har lagt till märket " + brand.Manufacturer);
                     return RedirectToAction("Create", "BrandImages", brand);
                 }
                 catch (Exception)
