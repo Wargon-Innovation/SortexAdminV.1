@@ -116,7 +116,7 @@ namespace SortexAdminV._1.Controllers
                 }
             }
             _notyf.Success("Du har lagt till " +  numberOfImages + " bilder till märket");
-            return RedirectToAction("Index", "Brands");
+            return RedirectToAction("Details", "Brands", new { Id = brandImage.BrandId });
         }
 
         // GET: BrandImages/Edit/5
@@ -187,14 +187,14 @@ namespace SortexAdminV._1.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.BrandId = id;
             return View(brandImages);
         }
 
         // POST: BrandImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(List<int> selectedImages)
+        public async Task<IActionResult> DeleteConfirmed(List<int> selectedImages, int Id)
         {
             try
             {
@@ -214,7 +214,7 @@ namespace SortexAdminV._1.Controllers
 
                 }
                 _notyf.Success("Du har tagit bort " + selectedImages.Count + " bilder från märket");
-                return RedirectToAction("Index", "Brands");
+                return RedirectToAction("Details", "Brands", new { id = Id });
             }
             catch (Exception)
             {

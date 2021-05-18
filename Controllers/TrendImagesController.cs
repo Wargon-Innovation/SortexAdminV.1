@@ -122,7 +122,7 @@ namespace SortexAdminV._1.Controllers
                 }
             }
             _notyf.Success("Du har lagt till " + trend.NumberOfImages + " bilder till trenden");
-            return RedirectToAction("Index", "Trends");
+            return RedirectToAction("Details", "Trends", new { Id = trend.Id });
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -194,13 +194,14 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
+            ViewBag.TrendId = id;
             return View(trendImages);
         }
 
         // POST: TrendImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(List<int> selectedImages)
+        public async Task<IActionResult> DeleteConfirmed(List<int> selectedImages, int Id)
         {
 
             try
@@ -221,7 +222,7 @@ namespace SortexAdminV._1.Controllers
 
                 }
                 _notyf.Success("Du har tagit bort " + selectedImages.Count + " bilder från trenden");
-                return RedirectToAction("Index", "Trends");
+                return RedirectToAction("Details", "Trends", new { id = Id });
             }
             catch (Exception)
             {

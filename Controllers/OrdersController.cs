@@ -63,7 +63,7 @@ namespace SortexAdminV._1.Controllers
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 _notyf.Success("Du har lagt till order " + order.Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Orders", new { Id = order.Id });
             }
             _notyf.Error("Något gick fel");
             return View(order);

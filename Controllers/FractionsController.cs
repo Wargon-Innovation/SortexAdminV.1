@@ -63,7 +63,7 @@ namespace SortexAdminV._1.Controllers
                 _context.Add(fraction);
                 await _context.SaveChangesAsync();
                 _notyf.Success("Du har lagt till fraktion " + fraction.Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Fractions", new { Id = fraction.Id });
             }
             _notyf.Error("Något gick fel");
             return View(fraction);

@@ -219,7 +219,7 @@ namespace SortexAdminV._1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Brands", new { Id = brand.Id });
             }
             return View(brand);
         }

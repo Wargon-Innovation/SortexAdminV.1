@@ -63,7 +63,7 @@ namespace SortexAdminV._1.Controllers
                 _context.Add(modeboard);
                 await _context.SaveChangesAsync();
                 _notyf.Success("Du har lagt till fraktion " + modeboard.Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Modeboards", new { Id = modeboard.Id });
             }
             return View(modeboard);
         }

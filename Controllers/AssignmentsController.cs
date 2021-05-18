@@ -63,7 +63,7 @@ namespace SortexAdminV._1.Controllers
                 _context.Add(assignment);
                 await _context.SaveChangesAsync();
                 _notyf.Success("Du har lagt till uppdrag " + assignment.Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Assignments", new { Id = assignment.Id });
             }
             return View(assignment);
         }
