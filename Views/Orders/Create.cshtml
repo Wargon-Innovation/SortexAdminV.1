@@ -17,12 +17,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Start" class="control-label">Startdatum</label>
-                <input asp-for="Start" class="form-control" id="datetimepicker3" />
+                <input type="date" asp-for="Start" class="form-control"/>
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="End" class="control-label">Slutdatum</label>
-                <input asp-for="End" class="form-control" />
+                <input type="date" asp-for="End" class="form-control" />
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
             <div class="form-group">
