@@ -22,8 +22,8 @@
         <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@item.Name</h4>
         <div class="card-body border-light">
             <h5 class="card-title">Datum</h5>
-            <p class="card-text">Start: @item.Start</p>
-            <p class="card-text">Slut: @item.End</p>
+            <p class="card-text">Start: @item.Start.ToString("yyyy-MM-dd")</p>
+            <p class="card-text">Slut: @item.End.ToString("yyyy-MM-dd")</p>
             <p class="line"></p>
             <h5 class="card-title">Beskrivning</h5>
             <p id="DescriptionOnCard" class="card-text">@item.Description</p>
