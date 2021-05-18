@@ -72,7 +72,6 @@ namespace SortexAdminV._1.Controllers
             DateTime localDate = DateTime.Now;
             var date = localDate.ToString("yyyyMMddTHHmmssZ");
 
-
             string fileName;
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
             string websiteURL = "http://localhost:39737/";
@@ -125,7 +124,6 @@ namespace SortexAdminV._1.Controllers
             _notyf.Success("Du har lagt till " + trend.NumberOfImages + " bilder till trenden");
             return RedirectToAction("Index", "Trends");
         }
-
 
         public async Task<IActionResult> Edit(int? id)
         {

@@ -178,7 +178,8 @@ namespace SortexAdminV._1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Trends", new { Id = trend.Id });
+
             }
             return View(trend);
         }
