@@ -24,8 +24,10 @@
                 <span>@tag &nbsp</span>
             }
         </p>
+        <p class="line"></p>
         <a class="btn btn-primary" asp-action="AddTags" asp-controller="Tags" asp-route-id="@Model.Id">Lägg till taggar</a>
         <a class="btn btn-primary" asp-action="Delete" asp-controller="Tags" asp-route-id="@Model.Id">Radera taggar</a>
+        <p></p>
         <p class="line"></p>
         <div class="row">
             @foreach (var image in ViewData["images"] as IList<string>)

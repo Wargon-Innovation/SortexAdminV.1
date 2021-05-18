@@ -75,8 +75,8 @@ namespace SortexAdminV._1.Controllers
 
             string fileName;
             //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
-            string websiteURL = "http://localhost:39737/";
-            //string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
+            //string websiteURL = "http://localhost:39737/";
+            string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
 
             trend.NumberOfImages = 0;
             string path = _environment.WebRootPath + "\\Uploads\\TrendImages\\";
