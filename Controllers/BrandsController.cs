@@ -53,10 +53,10 @@ namespace SortexAdminV._1.Controllers
             ViewData["tags"] = brandTagList;
 
             //HÄMTA ALLA BILDER
-            List<string> brandImages = await (from rowsImages in _context.BrandImages
+            var brandImages = await (from rowsImages in _context.BrandImages
                                               join rowsBrand in _context.Brands on rowsImages.BrandId equals rowsBrand.Id
                                               where rowsBrand.Id == id
-                                              select rowsImages.Image).ToListAsync();
+                                              select rowsImages).ToListAsync();
             ViewData["images"] = brandImages;
 
             return View(brand);

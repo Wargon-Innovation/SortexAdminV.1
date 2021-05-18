@@ -30,11 +30,19 @@
         <p></p>
         <p class="line"></p>
         <div class="row">
-            @foreach (var image in ViewData["images"] as IList<string>)
+            @foreach (var image in ViewData["images"] as IList<BrandImage>)
             {
-                <div class="col-sm">
-                    <img src="@image" alt="..." class="img-thumbnail">
+                @*<div class="col-sm brandImageDiv" id="">
+                <img src="@image.Image" alt="..." class="img-thumbnail brandImage" id="">
+                <div class="hiddenText">@image.ImageDescription</div>
+            </div>*@
+                <div class="col-sm" id="">
+                    <div class="brandImageDiv">
+                        <img src="@image.Image" alt="..." class="img-thumbnail brandImage" id="">
+                        <div class="hiddenText">@image.ImageDescription</div>
+                    </div>
                 </div>
+
             }
         </div>
         <p></p>

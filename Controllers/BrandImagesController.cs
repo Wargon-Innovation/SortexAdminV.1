@@ -69,7 +69,7 @@ namespace SortexAdminV._1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IEnumerable<IFormFile> files, BrandImagesUploadViewModel brandImage)
+        public async Task<IActionResult> Create(IEnumerable<IFormFile> files, List<string> imageDescriptions, BrandImagesUploadViewModel brandImage)
         {
             DateTime localDate = DateTime.Now;
             var date = localDate.ToString("yyyyMMddTHHmmssZ");
@@ -82,6 +82,7 @@ namespace SortexAdminV._1.Controllers
             string path = _environment.WebRootPath + "\\Uploads\\BrandImages\\";
             string fileName;
             var numberOfImages = 0;
+            int imageDescCount = 0;
             foreach (var image in files)
             {
                 fileName = date + image.FileName.ToLower();
@@ -98,6 +99,8 @@ namespace SortexAdminV._1.Controllers
                         newBrandImage.Image = websiteURL + "Uploads/BrandImages/" + fileName;
                         newBrandImage.FilePath = path + fileName;
                         newBrandImage.BrandId = brandImage.BrandId;
+                        newBrandImage.ImageDescription = imageDescriptions[imageDescCount];
+                        imageDescCount++;
                         _context.Add(newBrandImage);
                         await _context.SaveChangesAsync();
 

@@ -11,6 +11,7 @@ namespace SortexAdminV._1.ViewModels
     {
         public int Id { get; set; }
         public IFormFile Image { get; set; }
+        public string ImageDescription { get; set; }
         public string FilePath { get; set; }
         public int BrandId { get; set; }
 
