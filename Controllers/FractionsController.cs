@@ -116,7 +116,7 @@ namespace SortexAdminV._1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Fractions", new { Id = fraction.Id });
             }
             _notyf.Error("Något gick fel");
             return View(fraction);

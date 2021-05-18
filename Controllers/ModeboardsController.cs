@@ -115,7 +115,7 @@ namespace SortexAdminV._1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Modeboards", new { Id = modeboard.Id });
             }
             return View(modeboard);
         }
