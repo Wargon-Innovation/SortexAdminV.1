@@ -101,7 +101,35 @@ namespace SortexAdminV._1.Controllers
                     //SÄTT BRANDID FÖR ATT SKICKA TILL CREATEBRANDIMAGE
                     brand.Id = newBrand.Id;
 
-                    //KOLLA OM DET FINNS NÅGRA TAGGAR
+                    //LÄGG TILL STANDARD TAGGAR FÖR MANUFACTURER, GENDER, CLASSIFICATION
+                    List<Tag> standardTags = new List<Tag>();
+                    Tag manufacturerTag = new Tag();
+                    manufacturerTag.Value = brand.Manufacturer;
+                    standardTags.Add(manufacturerTag);
+
+                    Tag genderTag = new Tag();
+                    genderTag.Value = brand.Gender;
+                    standardTags.Add(genderTag);
+
+                    Tag classificationTag = new Tag();
+                    classificationTag.Value = brand.Classification;
+                    standardTags.Add(classificationTag);
+
+                    foreach (var tag in standardTags)
+                    {
+                        _context.Add(tag);
+                        await _context.SaveChangesAsync();
+
+                        int tagId = tag.Id;
+
+                        BrandTagMM brandTagMM = new BrandTagMM();
+                        brandTagMM.BrandId = brand.Id;
+                        brandTagMM.TagId = tagId;
+                        _context.Add(brandTagMM);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    //KOLLA OM DET FINNS NÅGRA ANDRA TAGGAR
                     if (brand.Tags != null)
                     {
                         //LADDA UPP ALLA TAGGAR
