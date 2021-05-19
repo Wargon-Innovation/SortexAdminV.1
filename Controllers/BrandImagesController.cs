@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using SortexAdminV._1.ViewModels;
 
 namespace SortexAdminV._1.Controllers
 {
+    [Authorize]
     public class BrandImagesController : Controller
     {
         private readonly SortexDBContext _context;

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SortexAdminV._1
 {
@@ -25,6 +26,8 @@ namespace SortexAdminV._1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options => { options.LoginPath = "/Login/Index/"; });
             services.AddControllersWithViews();
             services.AddDbContext<SortexDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -42,6 +45,9 @@ namespace SortexAdminV._1
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseAuthentication();
+
             app.UseStaticFiles();
 
             app.UseRouting();

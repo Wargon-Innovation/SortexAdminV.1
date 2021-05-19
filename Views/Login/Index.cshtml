@@ -1,0 +1,29 @@
+﻿@model SortexAdminV._1.Models.User
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+
+}
+
+<link rel="stylesheet" href="~/css/loginStyle.css" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Icon -->
+
+        <div class="fadeIn first">
+            <img src="~/icons/sortextransparent.png" id="icon" alt="User Icon" class="m-3" />
+        </div>
+
+        <!-- Login Form -->
+        <form asp-action="index">
+            <input asp-for="UserName" type="text" id="login" class="fadeIn second" placeholder="Användarnamn">
+            <input asp-for="Password" type="password" id="password" class="fadeIn third" placeholder="Lösenord">
+            <input type="submit" class="fadeIn fourth mt-4" value="Logga in" >
+        </form>
+    </div>
+</div>
+
