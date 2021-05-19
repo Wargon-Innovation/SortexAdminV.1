@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using SortexAdminV._1.ViewModels;
 
 namespace SortexAdminV._1.Controllers
 {
+    [Authorize]
     public class TagsController : Controller
     {
         private readonly SortexDBContext _context;
@@ -135,13 +137,14 @@ namespace SortexAdminV._1.Controllers
                 return NotFound();
             }
 
+            ViewBag.BrandId = id;
             return View(tags);
         }
 
         // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(List<int> selectedTags)
+        public async Task<IActionResult> DeleteConfirmed(List<int> selectedTags, int Id)
         {
             try
             {
@@ -153,7 +156,7 @@ namespace SortexAdminV._1.Controllers
                     _context.Tags.Remove(tag);
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction("Index", "Brands");
+                return RedirectToAction("Details", "Brands", new { id = Id});
             }
             catch (Exception)
             {
@@ -193,7 +196,7 @@ namespace SortexAdminV._1.Controllers
                     _context.Add(brandTagMM);
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction("Index", "Brands");
+                return RedirectToAction("Details", "Brands", new { id = brandId});
             }
             catch (Exception)
             {

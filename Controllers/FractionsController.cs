@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using SortexAdminV._1.Models;
 
 namespace SortexAdminV._1.Controllers
 {
+    [Authorize]
     public class FractionsController : Controller
     {
         private readonly SortexDBContext _context;
@@ -63,7 +65,7 @@ namespace SortexAdminV._1.Controllers
                 _context.Add(fraction);
                 await _context.SaveChangesAsync();
                 _notyf.Success("Du har lagt till fraktion " + fraction.Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Fractions", new { Id = fraction.Id });
             }
             _notyf.Error("Något gick fel");
             return View(fraction);
