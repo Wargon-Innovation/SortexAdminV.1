@@ -19,6 +19,7 @@ namespace SortexAdminV._1.Models
         public DbSet<Trend> Trends { get; set; }
         public DbSet<TrendImage> TrendImages { get; set; }
         public DbSet<TrendImageMM> TrendImageMMs { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public SortexDBContext(DbContextOptions options) : base (options)
         {

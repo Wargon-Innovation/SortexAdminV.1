@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
 
 namespace SortexAdminV._1.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly SortexDBContext _context;
+
+        public LoginController(SortexDBContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return View();
@@ -19,7 +27,10 @@ namespace SortexAdminV._1.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(User user)
         {
+           
+
             bool confirmedLogin = CheckUser(user);
+
             if (confirmedLogin == true)
             {
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -33,8 +44,20 @@ namespace SortexAdminV._1.Controllers
 
         private bool CheckUser(User user) 
         {
-            return true;
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+            var result = (from users in _context.Users
+                          where users.Password == passwordHash && users.UserName == user.UserName
+                          select users).FirstOrDefault();
+            if (result != null)
+            {
+                return true;
+            }            
+           
+            return false;
         }
+
 
     }
 }
+
