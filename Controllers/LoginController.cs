@@ -22,6 +22,15 @@ namespace SortexAdminV._1.Controllers
         }
         public IActionResult Index()
         {
+            var userList = _context.Users.ToList();
+            if(userList.Count == 0 || userList == null)
+            {
+                User newUser = new User();
+                newUser.UserName = "Admin";
+                newUser.Password = "sorTEXHVAdmin";
+                CreateUser(newUser);
+            }
+
             return View();
         }
         [HttpPost]
@@ -42,22 +51,32 @@ namespace SortexAdminV._1.Controllers
             return View();
         }
 
-        private bool CheckUser(User user) 
+        private bool CheckUser(User userLogin) 
         {
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(userLogin.Password);
 
-            var result = (from users in _context.Users
-                          where users.Password == passwordHash && users.UserName == user.UserName
-                          select users).FirstOrDefault();
-            if (result != null)
+            var user = _context.Users.SingleOrDefault(x => x.UserName.ToLower() == userLogin.UserName.ToLower());
+            
+            if(user == null)
+            {
+                //ANVÄNDARE FINNS INTE
+                return false;
+            }
+            bool isValidPassword = BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password);
+            if (isValidPassword)
             {
                 return true;
-            }            
-           
+            }
+            //LÖSENORD STÄMMER INTE
             return false;
         }
 
-
+        private void CreateUser(User user)
+        {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            _context.Add(user);
+            _context.SaveChanges();
+        }
     }
 }
 
