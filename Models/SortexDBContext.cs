@@ -21,10 +21,13 @@ namespace SortexAdminV._1.Models
         public DbSet<TrendImageMM> TrendImageMMs { get; set; }
         public DbSet<User> Users { get; set; }
 
+        public DbSet<WargonBrands> WargonBrands { get; set;}
+
         public SortexDBContext(DbContextOptions options) : base (options)
         {
 
         }
+
 
 
     }

@@ -28,6 +28,7 @@ namespace SortexAdminV._1.Controllers
         // GET: Brands
         public async Task<IActionResult> Index()
         {
+            AddWargonBrand();
             return View(await _context.Brands.ToListAsync());
         }
 
@@ -294,6 +295,144 @@ namespace SortexAdminV._1.Controllers
         private bool BrandExists(int id)
         {
             return _context.Brands.Any(e => e.Id == id);
+        }
+        private async void AddWargonBrand()
+        {
+            List<WargonBrands> wgBrands = new List<WargonBrands>();
+            wgBrands = _context.WargonBrands.ToList();
+            
+
+            foreach (var brand in wgBrands)
+            {
+                BrandUploadViewModel newBrand = new BrandUploadViewModel();
+                newBrand.Manufacturer = brand.Märke;
+                newBrand.Gender = "Unisex";
+                //newBrand.Id = 0;
+                for(int i=0; i<brand.Kategori.Length; i++)
+                {
+                    
+                    if (brand.Kategori[i] =='L')
+                    {
+                        newBrand.Classification += "Lågpris" + " ";
+                    }
+                    else if (brand.Kategori[i] == 'M')
+                    {
+                        newBrand.Classification += "Medelpris" + " ";
+                    }
+                    else if (brand.Kategori[i] == 'H')
+                    {
+                        newBrand.Classification += "Högt pris" + " ";
+                    }
+                    else if (brand.Kategori[i] == 'E')
+                    {
+                        newBrand.Classification += "Exklusiv" + " ";
+                    }
+                    else if (brand.Kategori[i] == '?')
+                    {
+                        newBrand.Classification += "Kan ej hitta information om prisklass" + " ";
+                    }
+
+                }
+
+
+                if (brand.Kategori.Contains("SP"))
+                {
+                    newBrand.Tags += "Sport" + " ";
+                }
+                else if (brand.Kategori.Contains("SÖ"))
+                {
+                    newBrand.Tags += "Sömnad - skräddat" + " ";
+                }
+                else if (brand.Kategori.Contains("B"))
+                {
+                    newBrand.Tags += "Barn" + " ";
+                }
+
+                await InsertBrands(newBrand);
+                
+            }
+        }
+
+        public async Task InsertBrands([Bind("Id,Manufacturer,Gender,Classification,NumberOfImages,Tags")] BrandUploadViewModel brand)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    //LADDA UPP MÄRKET
+                    Brand newBrand = new Brand();
+
+                    newBrand.Manufacturer = brand.Manufacturer;
+                    newBrand.Gender = brand.Gender;
+                    newBrand.Classification = brand.Classification;
+
+                    _context.Add(newBrand);
+                    await _context.SaveChangesAsync();
+
+                    //SÄTT BRANDID FÖR ATT SKICKA TILL CREATEBRANDIMAGE
+                    brand.Id = newBrand.Id;
+
+                    //LÄGG TILL STANDARD TAGGAR FÖR MANUFACTURER, GENDER, CLASSIFICATION
+                    List<Tag> standardTags = new List<Tag>();
+                    Tag manufacturerTag = new Tag();
+                    manufacturerTag.Value = brand.Manufacturer;
+                    standardTags.Add(manufacturerTag);
+
+                    Tag genderTag = new Tag();
+                    genderTag.Value = brand.Gender;
+                    standardTags.Add(genderTag);
+
+                    Tag classificationTag = new Tag();
+                    classificationTag.Value = brand.Classification;
+                    standardTags.Add(classificationTag);
+
+                    foreach (var tag in standardTags)
+                    {
+                        _context.Add(tag);
+                        await _context.SaveChangesAsync();
+
+                        int tagId = tag.Id;
+
+                        BrandTagMM brandTagMM = new BrandTagMM();
+                        brandTagMM.BrandId = brand.Id;
+                        brandTagMM.TagId = tagId;
+                        _context.Add(brandTagMM);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    //KOLLA OM DET FINNS NÅGRA ANDRA TAGGAR
+                    if (brand.Tags != null)
+                    {
+                        //LADDA UPP ALLA TAGGAR
+                        int brandId = newBrand.Id;
+                        string[] tags = brand.Tags.Split(' ');
+                        foreach (var tag in tags)
+                        {
+                            //SPARA VARJE TAGG I DATABASEN
+                            Tag newTag = new Tag();
+                            newTag.Value = tag;
+
+                            _context.Add(newTag);
+                            await _context.SaveChangesAsync();
+
+                            //SPARA KOPPLINGEN
+                            int tagId = newTag.Id;
+
+                            BrandTagMM brandTagMM = new BrandTagMM();
+                            brandTagMM.BrandId = brandId;
+                            brandTagMM.TagId = tagId;
+                            _context.Add(brandTagMM);
+                            await _context.SaveChangesAsync();
+                        }
+
+                    }
+                }
+                catch (Exception)
+                {
+                    
+                }
+            }
         }
     }
 }
