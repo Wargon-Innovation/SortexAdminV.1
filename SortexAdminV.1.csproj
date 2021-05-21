@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Uploads\BrandImages\" />
+    <Folder Include="wwwroot\Uploads\ModeboardImages\" />
     <Folder Include="wwwroot\Uploads\TrendImages\" />
   </ItemGroup>
 

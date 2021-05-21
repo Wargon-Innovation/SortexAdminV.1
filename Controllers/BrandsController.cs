@@ -26,11 +26,12 @@ namespace SortexAdminV._1.Controllers
         }
 
         // GET: Brands
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTag)
         {
-            AddWargonBrand();
             return View(await _context.Brands.ToListAsync());
         }
+
+
 
         // GET: Brands/Details/5
         public async Task<IActionResult> Details(int? id)

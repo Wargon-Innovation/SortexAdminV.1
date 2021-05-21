@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +19,12 @@ namespace SortexAdminV._1.Controllers
     {
         private readonly SortexDBContext _context;
         private readonly INotyfService _notyf;
+        private readonly IWebHostEnvironment _environment;
 
-        public ModeboardsController(SortexDBContext context, INotyfService notyf)
+        public ModeboardsController(SortexDBContext context, INotyfService notyf, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
             _notyf = notyf;
         }
 
@@ -58,16 +63,48 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Image")] Modeboard modeboard)
+        public async Task<IActionResult> Create(Modeboard modeboard, IFormFile file)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(modeboard);
-                await _context.SaveChangesAsync();
-                _notyf.Success("Du har lagt till fraktion " + modeboard.Name);
-                return RedirectToAction("Details", "Modeboards", new { Id = modeboard.Id });
-            }
-            return View(modeboard);
+            DateTime localDate = DateTime.Now;
+            var date = localDate.ToString("yyyyMMddTHHmmssZ");
+
+            //BYT DENNA TILL DEN RIKTIGA DOMÄNEN
+            string websiteURL = "http://localhost:39737/";
+            //string websiteURL = "https://informatik13.ei.hv.se/SortexAdmin/";
+
+
+            string path = _environment.WebRootPath + "\\Uploads\\ModeboardImages\\";
+            string fileName;
+
+                fileName = date + file.FileName.ToLower();
+
+                try
+                {
+                    //KOLLA OM BILDMAPPEN FINNS
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
+                    {
+                        modeboard.Image = websiteURL + "Uploads/ModeboardImages/" + fileName;
+                        modeboard.FilePath = path + fileName;
+
+                        _context.Add(modeboard);
+                        await _context.SaveChangesAsync();
+
+                        file.CopyTo(fileStream);
+                        fileStream.Flush();
+                    _notyf.Success("Du har lagt till modeboard " + modeboard.Name);
+                    return RedirectToAction("Details", "Modeboards", new { Id = modeboard.Id });
+                }
+                }
+                catch (Exception)
+                {
+                    _notyf.Error("Något gick fel");
+                    return RedirectToAction("Index");
+                }
+            
         }
 
         // GET: Modeboards/Edit/5
@@ -91,7 +128,7 @@ namespace SortexAdminV._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image")] Modeboard modeboard)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description, Image, FilePath")] Modeboard modeboard)
         {
             if (id != modeboard.Id)
             {
@@ -145,7 +182,14 @@ namespace SortexAdminV._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
             var modeboard = await _context.Modeboards.FindAsync(id);
+
+            FileInfo file = new FileInfo(modeboard.FilePath);
+            if (file.Exists)
+            {
+                file.Delete();
+            }
             _context.Modeboards.Remove(modeboard);
             await _context.SaveChangesAsync();
             _notyf.Success("Du har tagit bort modeboard " + modeboard.Name);

@@ -8,30 +8,44 @@
     <div class="text-center">
         <img src="~/icons/brandicon.png" alt="BrandIcon" class="img-top" />
     </div>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <p class="lead">Här kan du se, skapa, ändra eller ta bort alla era märken!</p>
     <p class="line"></p>
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <p>Genom att klicka på knappen nedan kan du skapa ett nytt märke. Du kan fylla i valfritt namn, klassificering, kön samt ladda upp ett valfrit antal tillhörande bilder.</p>
+    <p>Du kommer också kunna lägga till ett antal sökbara taggar till märket, tänk på att namn, klassificering och kön automatiskt läggs till så dessa taggar behöver du ej lägga till!</p>
     <p class="line"></p>
     <a class="btn btn-primary" asp-action="Create">Skapa ny</a>
-    <p/>
+    <p />
+    <p class="line"></p>
+    <p>Skriv in valfri tagg och klicka på sök för att hitta ett märke!</p>
+    <form class="form-inline" asp-controller="Brands" asp-action="Index" method="get">
+        <div class="form-group">
+            <input type="text" id="searchTag" name="searchTag">
+            <button type="submit" class="btn btn-primary m-2">Sök</button>
+        </div>
+    </form>
+    <p class="line"></p>
 </div>
 
+
 <div class="container text-center">
-    @foreach (var item in Model)
+    @if (Model != null)
     {
-        <div class="card" style="width: 18rem;">
-            <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@item.Manufacturer</h4>
-            <div class="card-body border-light">
-                <h5 class="card-title">Kön</h5>
-                <p class="card-text">@item.Gender</p>
-                <p class="line"></p>
-                <h5 class="card-title">Klassificering</h5>
-                <p class="card-text">@item.Classification</p>
-                <p class="line"></p>
-                <a class="btn btn-primary " asp-action="Edit" asp-route-id="@item.Id">Ändra</a>
-                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Detaljer</a>
-                <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id">Radera</a>
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 18rem;">
+                <h4 class="card-img-top text-center text-black font-weight-bold pt-2 pb-1">@item.Manufacturer</h4>
+                <div class="card-body border-light">
+                    <h5 class="card-title">Kön</h5>
+                    <p class="card-text">@item.Gender</p>
+                    <p class="line"></p>
+                    <h5 class="card-title">Klassificering</h5>
+                    <p class="card-text">@item.Classification</p>
+                    <p class="line"></p>
+                    <a class="btn btn-primary " asp-action="Edit" asp-route-id="@item.Id">Ändra</a>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Detaljer</a>
+                    <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id">Radera</a>
+                </div>
             </div>
-        </div>
+        }
     }
 </div>
