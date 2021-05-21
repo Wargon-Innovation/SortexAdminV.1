@@ -26,10 +26,22 @@ namespace SortexAdminV._1.Controllers
         }
 
         // GET: Brands
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTag)
         {
-            return View(await _context.Brands.ToListAsync());
+            if (!String.IsNullOrEmpty(searchTag))
+            {
+
+                var brands = await (from rowsBrands in _context.Brands
+                                    join rowsBrandTagsMM in _context.BrandTagMMs on rowsBrands.Id equals rowsBrandTagsMM.BrandId
+                                    join rowsBrandTags in _context.Tags on rowsBrandTagsMM.TagId equals rowsBrandTags.Id
+                                    where rowsBrandTags.Value.Contains(searchTag)
+                                    select rowsBrands).ToListAsync();
+                return View(brands);
+            }
+            return View();
         }
+
+
 
         // GET: Brands/Details/5
         public async Task<IActionResult> Details(int? id)
