@@ -8,9 +8,9 @@
     <div class="text-center">
         <img src="~/icons/modeboardicon.png" alt="Order" class="img-top" />
     </div>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <p class="lead">Här kan du se, skapa, ändra eller ta bort alla era fraktioner!</p>
     <p class="line"></p>
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <p>Genom att klicka på knappen nedan kan du skapa en ny modeboard. Du kan fylla i valfritt namn, beskrivning samt ladda upp en tillhörande bild för modeboarden.</p>
     <p class="line"></p>
     <a class="btn btn-primary" asp-action="Create">Skapa ny</a>
     <p/>
@@ -24,9 +24,6 @@
             <div class="card-body border-light">
                 <h5 class="card-title">Beskrivning</h5>
                 <p id="DescriptionOnCard" class="card-text">@item.Description</p>
-                <p class="line"></p>
-                <h5 class="card-title">Bild</h5>
-                <p class="card-text">@item.Image</p>
                 <p class="line"></p>
                 <a class="btn btn-primary " asp-action="Edit" asp-route-id="@item.Id">Ändra</a>
                 <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Detaljer</a>

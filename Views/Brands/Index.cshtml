@@ -8,16 +8,19 @@
     <div class="text-center">
         <img src="~/icons/brandicon.png" alt="BrandIcon" class="img-top" />
     </div>
-    <p class="lead">Sök på ett märke, taggar, klassificering eller kön för att hitta ett märke.</p>
+    <p class="lead">Här kan du se, skapa, ändra eller ta bort alla era märken!</p>
+    <p class="line"></p>
+    <p>Genom att klicka på knappen nedan kan du skapa ett nytt märke. Du kan fylla i valfritt namn, klassificering, kön samt ladda upp ett valfrit antal tillhörande bilder.</p>
+    <p>Du kommer också kunna lägga till ett antal sökbara taggar till märket, tänk på att namn, klassificering och kön automatiskt läggs till så dessa taggar behöver du ej lägga till!</p>
     <p class="line"></p>
     <a class="btn btn-primary" asp-action="Create">Skapa ny</a>
     <p />
     <p class="line"></p>
+    <p>Skriv in valfri tagg och klicka på sök för att hitta ett märke!</p>
     <form class="form-inline" asp-controller="Brands" asp-action="Index" method="get">
         <div class="form-group">
-            <label for="searchTag">Sök efter en tagg</label>
-            <input class="mx-sm-3" type="text" id="searchTag" name="searchTag">
-            <button type="submit" class="btn btn-primary mb-2">Sök</button>
+            <input type="text" id="searchTag" name="searchTag">
+            <button type="submit" class="btn btn-primary m-2">Sök</button>
         </div>
     </form>
     <p class="line"></p>
