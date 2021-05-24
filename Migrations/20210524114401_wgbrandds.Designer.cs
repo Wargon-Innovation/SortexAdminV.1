@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SortexAdminV._1.Models;
 
 namespace SortexAdminV._1.Migrations
 {
     [DbContext(typeof(SortexDBContext))]
-    partial class SortexDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210524114401_wgbrandds")]
+    partial class wgbrandds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,7 +274,7 @@ namespace SortexAdminV._1.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SortexAdminV._1.Models.WargonBrand", b =>
+            modelBuilder.Entity("SortexAdminV._1.Models.WargonBrands", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

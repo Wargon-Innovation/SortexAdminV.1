@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SortexAdminV._1.Models
 {
-    public class WargonBrands
+    public class WargonBrand
     {
-        [Key]
+        public int Id { get; set; }
         public string Märke { get; set; }
         public string Kategori { get; set; }
     }
