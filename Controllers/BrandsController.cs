@@ -181,7 +181,7 @@ namespace SortexAdminV._1.Controllers
                     if (brand.NumberOfImages <= 0 || brand.NumberOfImages == 0)
                     {
                         _notyf.Success("Du har lagt till märket " + brand.Manufacturer);
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Details", "Brands", new { Id = brand.Id });
                     }
                     _notyf.Success("Du har lagt till märket " + brand.Manufacturer);
                     return RedirectToAction("Create", "BrandImages", brand);
@@ -192,6 +192,7 @@ namespace SortexAdminV._1.Controllers
                 }
             }
             return View(brand);
+
         }
 
         // GET: Brands/Edit/5

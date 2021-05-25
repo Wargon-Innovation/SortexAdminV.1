@@ -37,4 +37,6 @@
     <Folder Include="wwwroot\Uploads\TrendImages\" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/aiproj.json" /></VisualStudio></ProjectExtensions>
+
 </Project>

@@ -126,7 +126,7 @@ namespace SortexAdminV._1.Controllers
             //KOLLA OM DET INTE SKA LADDAS UPP BILDER
             if(trendView.NumberOfImages == 0)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Trends", new { Id = trendView.Id } );
             }
 
             return RedirectToAction("Create", "TrendImages", trendView);
